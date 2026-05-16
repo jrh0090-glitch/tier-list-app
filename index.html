@@ -1,0 +1,763 @@
+<!-- Tier List App — MIT License — Copyright (c) 2026 D.K. Sable — github.com/[your-username]/tier-list-app -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Tier List App</title>
+
+<!-- PWA -->
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#1a1a18">
+
+<!-- iOS install support -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Tier List">
+<link rel="apple-touch-icon" href="icons/icon-180.png">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#faf9f6;--surface:#fff;--surface2:#f3f1ec;--surface3:#eceae3;
+  --border:rgba(0,0,0,.10);--border-med:rgba(0,0,0,.18);
+  --text:#1a1a18;--text2:#666660;--text3:#999993;
+  --radius:10px;--radius-lg:14px;--radius-xl:18px;
+  --s-bg:#FAEEDA;--s-bd:#BA7517;--s-tx:#633806;
+  --a-bg:#EAF3DE;--a-bd:#3B6D11;--a-tx:#27500A;
+  --b-bg:#E6F1FB;--b-bd:#185FA5;--b-tx:#0C447C;
+  --c-bg:#F1EFE8;--c-bd:#888780;--c-tx:#444441;
+  --d-bg:#FAECE7;--d-bd:#993C1D;--d-tx:#712B13;
+  --f-bg:#FCEBEB;--f-bd:#A32D2D;--f-tx:#791F1F;
+}
+@media(prefers-color-scheme:dark){:root{
+  --bg:#1c1b18;--surface:#252420;--surface2:#2e2c28;--surface3:#383530;
+  --border:rgba(255,255,255,.09);--border-med:rgba(255,255,255,.16);
+  --text:#f0ede6;--text2:#a09d96;--text3:#6b6864;
+  --s-bg:#3a2800;--s-bd:#BA7517;--s-tx:#FAC775;
+  --a-bg:#192800;--a-bd:#3B6D11;--a-tx:#C0DD97;
+  --b-bg:#001830;--b-bd:#185FA5;--b-tx:#85B7EB;
+  --c-bg:#252420;--c-bd:#888780;--c-tx:#B4B2A9;
+  --d-bg:#2a1200;--d-bd:#993C1D;--d-tx:#F0997B;
+  --f-bg:#280000;--f-bd:#A32D2D;--f-tx:#F09595;
+}}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+
+/* HEADER */
+header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;position:sticky;top:0;z-index:100}
+.header-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px}
+.app-logo{font-size:22px;line-height:1}
+.app-name{font-size:16px;font-weight:600;flex:1}
+.app-tag{font-size:11px;color:var(--text3);margin-top:1px}
+
+/* LIST HEADER (when inside a list) */
+.list-header{display:none;align-items:center;gap:10px;flex:1}
+.list-header.active{display:flex}
+.back-btn{padding:5px 10px;font-size:13px;border-radius:99px;border:1px solid var(--border-med);background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s}
+.back-btn:hover{background:var(--surface3)}
+.list-header-name{font-size:15px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.list-tabs{display:flex;gap:4px}
+.ltab{padding:5px 12px;font-size:12px;border-radius:99px;border:1px solid var(--border-med);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s}
+.ltab.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+
+/* PROGRESS BAR */
+.progress-bar-wrap{display:flex;align-items:center;gap:8px;padding:8px 20px 10px;max-width:860px;margin:0 auto;display:none}
+.progress-bar-wrap.active{display:flex}
+.ptrack{flex:1;height:4px;background:var(--surface2);border-radius:99px;overflow:hidden}
+.pfill{height:100%;background:#BA7517;border-radius:99px;transition:width .35s ease}
+.plabel{font-size:11px;color:var(--text3);white-space:nowrap}
+
+main{max-width:860px;margin:0 auto;padding:20px 16px 80px}
+.view{display:none}
+.view.active{display:block}
+
+/* ── LIBRARY ── */
+.lib-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin:0 0 10px}
+.import-row{display:flex;gap:8px;margin-bottom:28px;align-items:center;flex-wrap:wrap}
+.import-row p{font-size:13px;color:var(--text2);flex:1}
+
+.pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:32px}
+
+.pack-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:18px;display:flex;flex-direction:column;gap:10px;transition:border-color .15s}
+.pack-card:hover{border-color:var(--border-med)}
+.pack-card.added{border-color:var(--border-med)}
+
+.pack-top{display:flex;align-items:flex-start;gap:10px}
+.pack-emoji{font-size:28px;line-height:1;flex-shrink:0;margin-top:2px}
+.pack-info{flex:1;min-width:0}
+.pack-name{font-size:14px;font-weight:500;margin-bottom:2px}
+.pack-sub{font-size:12px;color:var(--text3)}
+
+.pack-progress{display:none}
+.pack-progress.visible{display:block}
+.pack-ptrack{height:4px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-bottom:4px}
+.pack-pfill{height:100%;background:#BA7517;border-radius:99px;transition:width .35s}
+.pack-ptext{font-size:11px;color:var(--text3)}
+
+.pack-actions{display:flex;gap:6px;margin-top:2px}
+.pack-btn{padding:6px 14px;font-size:12px;font-weight:500;border-radius:99px;border:1px solid var(--border-med);background:var(--surface2);color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap}
+.pack-btn:hover{background:var(--surface3)}
+.pack-btn.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+.pack-btn.primary:hover{opacity:.85}
+.pack-btn.danger{color:var(--f-tx);border-color:var(--f-bd)}
+.pack-btn.danger:hover{background:var(--f-bg)}
+.pack-btn.add-btn-lib{background:transparent;border-color:var(--border-med);color:var(--text2)}
+.pack-btn.add-btn-lib:hover{background:var(--surface3);color:var(--text)}
+
+.empty-lib{text-align:center;padding:32px 20px;background:var(--surface);border:1px dashed var(--border-med);border-radius:var(--radius-xl);margin-bottom:28px}
+.empty-lib p{font-size:14px;color:var(--text2);margin-bottom:12px}
+
+/* ── TIER RATING ── */
+.tier-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
+.tbtn{min-width:54px;height:54px;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;flex-shrink:0;cursor:pointer;transition:transform .1s,opacity .15s;border:1px solid}
+.tbtn:active{transform:scale(0.95)}
+.tbtn:disabled{opacity:.4;cursor:default}
+.tletter{font-size:18px;font-weight:600;line-height:1}
+.tsub{font-size:8px;opacity:.85;text-transform:uppercase;letter-spacing:.04em}
+.tdrop{flex:1;min-height:54px;border:1px solid var(--border);border-radius:var(--radius);padding:7px;display:flex;flex-wrap:wrap;gap:5px;align-content:center;background:var(--surface)}
+.rchip{font-size:12px;padding:4px 9px;border-radius:99px;border:1px solid;cursor:pointer;user-select:none;transition:opacity .15s}
+.rchip:hover{opacity:.65}
+
+.now-rating{margin-top:14px;padding:11px 15px;background:var(--surface);border:1px solid var(--border-med);border-radius:var(--radius-lg);display:flex;align-items:center;gap:10px}
+.now-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
+.now-name{font-size:15px;font-weight:500;flex:1}
+.now-hint{font-size:11px;color:var(--text3);animation:pulse 2.5s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+
+.pool-lbl{font-size:11px;color:var(--text3);margin:14px 0 7px;text-transform:uppercase;letter-spacing:.05em}
+.pool{display:flex;flex-wrap:wrap;gap:5px}
+.pchip{font-size:12.5px;padding:6px 12px;border-radius:99px;border:1px solid var(--border-med);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
+.pchip:hover{background:var(--surface2)}
+.pchip.sel{background:var(--text);color:var(--bg);border-color:var(--text);font-weight:500}
+.pchip.custom{border-color:var(--b-bd);color:var(--b-tx);background:var(--b-bg)}
+@media(prefers-color-scheme:dark){.pchip.custom{border-color:var(--b-bd);color:var(--b-tx);background:var(--b-bg)}}
+
+.done-banner{text-align:center;padding:22px 0}
+.done-banner p{font-size:14px;color:var(--text2);margin-bottom:12px}
+
+/* ── RESULTS ── */
+.res-row{display:flex;margin-bottom:6px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
+.res-tier{width:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0;flex-shrink:0}
+.res-letter{font-size:20px;font-weight:600;line-height:1}
+.res-sub{font-size:7.5px;opacity:.8;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
+.res-chips{flex:1;padding:8px 10px;background:var(--surface);display:flex;flex-wrap:wrap;gap:5px;align-content:center}
+.res-chip{font-size:12px;padding:3px 9px;border-radius:99px}
+.unrated-note{margin-top:12px;padding:10px 14px;background:var(--surface2);border-radius:var(--radius);font-size:12px;color:var(--text2)}
+
+.save-box{margin-top:22px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.save-box h3{font-size:13px;font-weight:500;margin-bottom:6px}
+.save-box p{font-size:12px;color:var(--text2);margin-bottom:9px}
+.save-box textarea{width:100%;height:110px;font-size:11px;font-family:monospace;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px;color:var(--text2);resize:none}
+
+/* ── MANAGE ── */
+.manage-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:12px}
+.manage-card h3{font-size:14px;font-weight:500;margin-bottom:12px}
+.add-row{display:flex;gap:8px}
+.add-input{flex:1;padding:9px 14px;font-size:14px;border-radius:99px;border:1px solid var(--border-med);background:var(--surface2);color:var(--text);outline:none;transition:box-shadow .15s}
+.add-input:focus{box-shadow:0 0 0 3px rgba(0,0,0,.06)}
+.add-input::placeholder{color:var(--text3)}
+.add-submit{padding:9px 18px;font-size:13px;font-weight:500;border-radius:99px;border:none;background:var(--text);color:var(--bg);cursor:pointer;transition:opacity .15s,transform .1s;white-space:nowrap}
+.add-submit:hover{opacity:.85}
+.add-submit:active{transform:scale(.97)}
+.add-err{font-size:12px;color:var(--f-tx);margin-top:6px;min-height:16px}
+.flavor-list{display:flex;flex-direction:column}
+.fl-item{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:var(--radius);transition:background .12s}
+.fl-item:hover{background:var(--surface2)}
+.fl-name{flex:1;font-size:13px}
+.pill{font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+.pill-custom{background:var(--b-bg);color:var(--b-tx)}
+.pill-rated{background:var(--surface2);color:var(--text3);border:1px solid var(--border-med)}
+.rm-btn{width:26px;height:26px;border-radius:99px;border:1px solid var(--border-med);background:transparent;color:var(--text3);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;line-height:1}
+.rm-btn:hover{border-color:var(--f-bd);color:var(--f-tx);background:var(--f-bg)}
+.sec-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 5px}
+.sec-lbl:first-child{margin-top:0}
+.divider{height:1px;background:var(--border);margin:10px 0}
+
+/* SHARED BUTTONS */
+.btn-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
+.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:99px;border:1px solid var(--border-med);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap}
+.btn:hover{background:var(--surface2)}
+.btn:active{transform:scale(.97)}
+.btn.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
+.btn.primary:hover{opacity:.86}
+
+/* IMPORT ERROR TOAST */
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a18;color:#f0ede6;padding:10px 18px;border-radius:99px;font-size:13px;transition:transform .3s ease;z-index:999;white-space:nowrap;pointer-events:none}
+.toast.show{transform:translateX(-50%) translateY(0)}
+
+@media(max-width:480px){
+  .app-name{font-size:14px}
+  .tbtn{min-width:48px;height:48px}
+  .tletter{font-size:16px}
+  .ltab{padding:5px 9px;font-size:11px}
+  .pack-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="app-logo" id="logo" onclick="goHome()" style="cursor:pointer" title="Home">🏆</div>
+    <div id="lib-header" style="flex:1">
+      <div class="app-name">Tier List</div>
+      <div class="app-tag">Rate anything, one list at a time</div>
+    </div>
+    <div class="list-header" id="list-header">
+      <button class="back-btn" onclick="goHome()">← All Lists</button>
+      <span class="list-header-name" id="list-header-name"></span>
+      <div class="list-tabs">
+        <button class="ltab active" id="ltab-rate"    onclick="switchListTab('rate')">Rate</button>
+        <button class="ltab"        id="ltab-results" onclick="switchListTab('results')">Results</button>
+        <button class="ltab"        id="ltab-manage"  onclick="switchListTab('manage')">Flavors</button>
+      </div>
+    </div>
+    <label class="btn primary" style="cursor:pointer" title="Import a .json list pack">
+      + Import
+      <input type="file" accept=".json" style="display:none" onchange="handleImport(event)">
+    </label>
+  </div>
+</header>
+<div id="progress-bar-wrap" class="progress-bar-wrap">
+  <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
+  <span class="plabel" id="plabel">0 / 0</span>
+</div>
+
+<main>
+
+  <!-- ── LIBRARY ── -->
+  <div class="view active" id="view-library">
+    <div id="my-lists-wrap"></div>
+    <div>
+      <div class="lib-section-title">Available packs</div>
+      <div class="pack-grid" id="builtin-grid"></div>
+    </div>
+  </div>
+
+  <!-- ── RATE ── -->
+  <div class="view" id="view-rate">
+    <div id="tier-rows"></div>
+    <div id="now-wrap"></div>
+    <div id="pool-wrap"></div>
+  </div>
+
+  <!-- ── RESULTS ── -->
+  <div class="view" id="view-results">
+    <div id="res-rows"></div>
+    <div id="res-unrated"></div>
+    <div class="save-box">
+      <h3>Save your rankings</h3>
+      <p>Copy the text below to save your tier list.</p>
+      <textarea id="save-text" readonly></textarea>
+      <div class="btn-row">
+        <button class="btn" onclick="copyText()">📋 Copy text</button>
+        <button class="btn" onclick="resetRatings()">↺ Reset ratings</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── MANAGE ── -->
+  <div class="view" id="view-manage">
+    <div class="manage-card">
+      <h3>Add an item</h3>
+      <div class="add-row">
+        <input class="add-input" id="add-input" type="text" placeholder="Enter a name…" maxlength="80"
+          onkeydown="if(event.key==='Enter') addItem()">
+        <button class="add-submit" onclick="addItem()">Add</button>
+      </div>
+      <div class="add-err" id="add-err"></div>
+    </div>
+    <div class="manage-card">
+      <h3>All items</h3>
+      <div id="manage-list"></div>
+    </div>
+  </div>
+
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ─── BUILT-IN PACKS ─────────────────────────────────────────────────── */
+const BUILTIN_PACKS = [
+  {
+    id:"cheesecake-factory",name:"The Cheesecake Factory",emoji:"🍰",
+    subtitle:"All 34 cheesecake flavors",
+    items:["Original","Fresh Strawberry","Godiva® Chocolate","Oreo® Dream Extreme",
+      "Reese's® PB Chocolate Cake","Cookie Dough Lover's","Coconut Cream Pie",
+      "Pineapple Upside-Down","Classic Basque","Adam's PB Cup Fudge Ripple",
+      "Very Cherry Chocolate","Cinnabon® Cinnamon Swirl","Salted Caramel",
+      "Dulce De Leche Caramel","Mango Key Lime","Fresh Banana Cream","Chocolate Mousse",
+      "Snickers® Caramelicious","Chocolate Tuxedo Cream","Hershey's® Chocolate Bar",
+      "Key Lime","Low-licious","Low-licious w/ Strawberries","Caramel Pecan Turtle",
+      "White Choc Raspberry Truffle","Tiramisu","Red Velvet","Lemon Raspberry Cream",
+      "Celebration","Lemon Meringue","S'mores","Pumpkin",
+      "Peach Perfect w/ Raspberry","Triple Berry Bliss"]
+  },
+  {
+    id:"jenis-ice-cream",name:"Jeni's Splendid Ice Creams",emoji:"🍦",
+    subtitle:"Signature & seasonal flavors",
+    items:["Brambleberry Crisp","Brown Butter Almond Brittle","Buttercream Birthday Cake",
+      "Chocolate Chip Cookie Dough","Honey Vanilla Bean","Darkest Chocolate",
+      "The Milkiest Chocolate","Lemon Blueberry Buttermilk","Ohio Strawberry",
+      "Candy Bar Pie","Salty Caramel","Sweet Cream Biscuits & Peach Jam",
+      "Bay Leaf Cheesecake","Wildberry Lavender","Black Coffee","Sweet Cream",
+      "After Midnight","Pineapple Upside-Down Cake","Lemon Curd Shortbread",
+      "Brioche Donut Custard","Pancakes & Maple Syrup","Roasted Peanut Butter & Chocolate",
+      "Queen Charlotte's Rose Almond Cake","Cold Brew & Coconut Cream","Snow Cone Sorbet",
+      "Ted Lasso Shortbread Cookie","Gooey Butter Cake","Sugar Cookie",
+      "Citrus Glazed Pound Cake","Raspberry Rhubarb Delight","Tropical Bloom"]
+  },
+  {
+    id:"pizza-toppings",name:"Pizza Toppings",emoji:"🍕",
+    subtitle:"Rate all 40 toppings",
+    items:["Pepperoni","Italian Sausage","Bacon","Ham","Prosciutto","Salami","Anchovies",
+      "Grilled Chicken","Ground Beef","Meatballs","Spicy Soppressata","Chorizo",
+      "Bell Peppers","Red Onion","Mushrooms","Black Olives","Green Olives","Jalapeños",
+      "Banana Peppers","Fresh Spinach","Cherry Tomatoes","Roasted Garlic","Artichoke Hearts",
+      "Sun-dried Tomatoes","Caramelized Onions","Arugula","Broccoli",
+      "Fresh Mozzarella","Ricotta","Parmesan","Gorgonzola","Feta","Goat Cheese","Burrata",
+      "Classic Marinara","Pesto","Alfredo","BBQ Sauce","Olive Oil & Garlic","Buffalo Sauce"]
+  }
+];
+
+const TIERS = [
+  {id:"S",label:"S",sub:"legendary"},
+  {id:"A",label:"A",sub:"so good"},
+  {id:"B",label:"B",sub:"solid"},
+  {id:"C",label:"C",sub:"it's fine"},
+  {id:"D",label:"D",sub:"i'd pass"},
+  {id:"F",label:"F",sub:"never again"},
+];
+const TIER_LABELS = {S:"Legendary",A:"So Good",B:"Solid Choice",C:"It's Fine",D:"I'd Pass",F:"Never Again"};
+const COL = {
+  S:{bg:"var(--s-bg)",bd:"var(--s-bd)",tx:"var(--s-tx)"},
+  A:{bg:"var(--a-bg)",bd:"var(--a-bd)",tx:"var(--a-tx)"},
+  B:{bg:"var(--b-bg)",bd:"var(--b-bd)",tx:"var(--b-tx)"},
+  C:{bg:"var(--c-bg)",bd:"var(--c-bd)",tx:"var(--c-tx)"},
+  D:{bg:"var(--d-bg)",bd:"var(--d-bd)",tx:"var(--d-tx)"},
+  F:{bg:"var(--f-bg)",bd:"var(--f-bd)",tx:"var(--f-tx)"},
+};
+
+/* ─── LOCALSTORAGE ───────────────────────────────────────────────────── */
+const LS = {
+  get:(k,fb)=>{ try{const v=localStorage.getItem(k);return v?JSON.parse(v):fb}catch{return fb} },
+  set:(k,v)=>{ try{localStorage.setItem(k,JSON.stringify(v))}catch{} }
+};
+
+/* ─── STATE ──────────────────────────────────────────────────────────── */
+let state = {
+  view: 'library',          // library | rate | results | manage
+  listTab: 'rate',
+  activeId: null,           // active list id
+  myListIds: LS.get('tla_my_list_ids', []),
+  importedLists: LS.get('tla_imported_lists', {}), // id → list object (for non-builtins)
+};
+
+function getList(id) {
+  return BUILTIN_PACKS.find(p=>p.id===id) || state.importedLists[id] || null;
+}
+function getAllItems(id) {
+  const list = getList(id); if(!list) return [];
+  const custom = LS.get('tla_custom_'+id, []);
+  return [...list.items, ...custom];
+}
+function getRatings(id) { return LS.get('tla_ratings_'+id, {S:[],A:[],B:[],C:[],D:[],F:[]}); }
+function saveRatings(id, r) { LS.set('tla_ratings_'+id, r); }
+function getCustomItems(id) { return LS.get('tla_custom_'+id, []); }
+function saveCustomItems(id, items) { LS.set('tla_custom_'+id, items); }
+function getSelected(id) { return LS.get('tla_sel_'+id, null); }
+function saveSelected(id, v) { LS.set('tla_sel_'+id, v); }
+
+function getRated(ratings) { return new Set(Object.values(ratings).flat()); }
+function getUnrated(id) {
+  const all = getAllItems(id), rated = getRated(getRatings(id));
+  return all.filter(f=>!rated.has(f));
+}
+function getTierOf(id, f) {
+  const r = getRatings(id);
+  return TIERS.find(t=>r[t.id].includes(f))?.id || null;
+}
+
+/* ─── NAVIGATION ─────────────────────────────────────────────────────── */
+function goHome() {
+  state.activeId = null; state.view = 'library';
+  renderAll();
+}
+
+function openList(id, tab) {
+  state.activeId = id; state.view = 'list';
+  state.listTab = tab || 'rate';
+  // auto-select first unrated if no selection saved
+  if(!getSelected(id)) {
+    const u = getUnrated(id);
+    if(u.length) saveSelected(id, u[0]);
+  }
+  renderAll();
+}
+
+function switchListTab(tab) {
+  state.listTab = tab; renderAll();
+}
+
+/* ─── LIBRARY ACTIONS ────────────────────────────────────────────────── */
+function addBuiltinList(id) {
+  if(!state.myListIds.includes(id)) {
+    state.myListIds.push(id);
+    LS.set('tla_my_list_ids', state.myListIds);
+  }
+  renderAll();
+}
+
+function removeList(id) {
+  const list = getList(id);
+  const name = list?.name || 'this list';
+  if(!confirm(`Remove "${name}" from your library? Ratings are saved and will come back if you re-add it.`)) return;
+  state.myListIds = state.myListIds.filter(x=>x!==id);
+  LS.set('tla_my_list_ids', state.myListIds);
+  renderAll();
+}
+
+function handleImport(e) {
+  const file = e.target.files[0]; if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      if(!data.items || !Array.isArray(data.items) || !data.items.length)
+        return showToast('Invalid list file — needs an "items" array');
+      const id = data.id || 'imported_' + Date.now();
+      const pack = {
+        id, name: data.name||'Imported List',
+        emoji: data.emoji||'📋',
+        subtitle: data.subtitle||data.items.length+' items',
+        items: data.items.map(i=>typeof i==='string'?i:(i.name||String(i))).filter(Boolean)
+      };
+      state.importedLists[id] = pack;
+      LS.set('tla_imported_lists', state.importedLists);
+      if(!state.myListIds.includes(id)) {
+        state.myListIds.push(id);
+        LS.set('tla_my_list_ids', state.myListIds);
+      }
+      showToast('✓ "'+pack.name+'" added to your library');
+      renderAll();
+    } catch { showToast('Could not read that file — check it\'s valid JSON'); }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+/* ─── RATING ACTIONS ─────────────────────────────────────────────────── */
+function assign(tierId) {
+  const id = state.activeId; if(!id) return;
+  const sel = getSelected(id); if(!sel) return;
+  const r = getRatings(id);
+  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==sel); });
+  r[tierId].push(sel);
+  saveRatings(id, r);
+  const remaining = getUnrated(id);
+  saveSelected(id, remaining[0]||null);
+  renderAll();
+}
+
+function reRate(f) {
+  const id = state.activeId; if(!id) return;
+  const r = getRatings(id);
+  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==f); });
+  saveRatings(id, r); saveSelected(id, f);
+  switchListTab('rate');
+}
+
+function selectItem(f) {
+  saveSelected(state.activeId, f); renderAll();
+}
+
+function resetRatings() {
+  if(!confirm('Clear all ratings for this list? Your items stay the same.')) return;
+  const id = state.activeId;
+  saveRatings(id, {S:[],A:[],B:[],C:[],D:[],F:[]});
+  const u = getUnrated(id);
+  saveSelected(id, u[0]||null);
+  switchListTab('rate');
+}
+
+/* ─── MANAGE ACTIONS ─────────────────────────────────────────────────── */
+function addItem() {
+  const id = state.activeId; if(!id) return;
+  const input = document.getElementById('add-input');
+  const errEl = document.getElementById('add-err');
+  const name = input.value.trim(); errEl.textContent='';
+  if(!name){errEl.textContent='Please enter a name.';return}
+  const all = getAllItems(id);
+  if(all.some(f=>f.toLowerCase()===name.toLowerCase())){
+    errEl.textContent=`"${name}" is already in the list.`; return;
+  }
+  const custom = getCustomItems(id);
+  custom.push(name); saveCustomItems(id, custom);
+  if(!getSelected(id)) saveSelected(id, name);
+  input.value=''; renderAll();
+}
+
+function removeItem(f) {
+  const id = state.activeId; if(!id) return;
+  const tierId = getTierOf(id, f);
+  if(tierId && !confirm(`"${f}" is rated ${tierId}. Remove it anyway?`)) return;
+  const custom = getCustomItems(id).filter(x=>x!==f);
+  saveCustomItems(id, custom);
+  const r = getRatings(id);
+  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==f); });
+  saveRatings(id, r);
+  if(getSelected(id)===f) {
+    const u = getUnrated(id).filter(x=>x!==f);
+    saveSelected(id, u[0]||null);
+  }
+  renderAll();
+}
+
+/* ─── RENDER ─────────────────────────────────────────────────────────── */
+function renderAll() {
+  // Show/hide header sections
+  document.getElementById('lib-header').style.display   = state.view==='library'?'block':'none';
+  const lh = document.getElementById('list-header');
+  if(state.view!=='library' && state.activeId) {
+    lh.classList.add('active');
+    const list = getList(state.activeId);
+    document.getElementById('list-header-name').textContent = (list?.emoji||'')+'  '+(list?.name||'');
+    ['rate','results','manage'].forEach(t=>{
+      document.getElementById('ltab-'+t).classList.toggle('active', t===state.listTab);
+    });
+  } else { lh.classList.remove('active'); }
+
+  // Progress bar
+  const pbw = document.getElementById('progress-bar-wrap');
+  if(state.view!=='library' && state.activeId) {
+    pbw.classList.add('active');
+    const id = state.activeId;
+    const all = getAllItems(id), rated = getRated(getRatings(id)).size;
+    const pct = all.length?Math.round(rated/all.length*100):0;
+    document.getElementById('pfill').style.width=pct+'%';
+    document.getElementById('plabel').textContent=rated+' / '+all.length;
+  } else { pbw.classList.remove('active'); }
+
+  // Views
+  ['library','rate','results','manage'].forEach(v=>{
+    document.getElementById('view-'+v).classList.toggle('active', false);
+  });
+  if(state.view==='library') {
+    document.getElementById('view-library').classList.add('active');
+    renderLibrary();
+  } else if(state.view==='list') {
+    document.getElementById('view-'+state.listTab).classList.add('active');
+    if(state.listTab==='rate') renderRate();
+    else if(state.listTab==='results') renderResults();
+    else renderManage();
+  }
+}
+
+/* ── Library ── */
+function renderLibrary() {
+  // My lists
+  const myWrap = document.getElementById('my-lists-wrap');
+  if(state.myListIds.length===0) {
+    myWrap.innerHTML=`<div style="margin-bottom:28px">
+      <div class="lib-section-title">My lists</div>
+      <div class="empty-lib">
+        <p>No lists yet — add one from the packs below or import your own .json file.</p>
+      </div></div>`;
+  } else {
+    myWrap.innerHTML=`<div style="margin-bottom:28px">
+      <div class="lib-section-title">My lists</div>
+      <div class="pack-grid">${state.myListIds.map(id=>myListCard(id)).join('')}</div>
+    </div>`;
+  }
+  // Built-in packs (not yet added)
+  const notAdded = BUILTIN_PACKS.filter(p=>!state.myListIds.includes(p.id));
+  const grid = document.getElementById('builtin-grid');
+  if(notAdded.length===0) {
+    grid.innerHTML='<p style="font-size:13px;color:var(--text3)">All available packs are in your library!</p>';
+  } else {
+    grid.innerHTML = notAdded.map(p=>`
+      <div class="pack-card">
+        <div class="pack-top">
+          <div class="pack-emoji">${p.emoji}</div>
+          <div class="pack-info">
+            <div class="pack-name">${p.name}</div>
+            <div class="pack-sub">${p.subtitle}</div>
+          </div>
+        </div>
+        <div class="pack-actions">
+          <button class="pack-btn add-btn-lib" onclick="addBuiltinList('${p.id}')">+ Add to my lists</button>
+        </div>
+      </div>`).join('');
+  }
+}
+
+function myListCard(id) {
+  const list = getList(id); if(!list) return '';
+  const all = getAllItems(id), ratings = getRatings(id), rated = getRated(ratings).size;
+  const pct = all.length?Math.round(rated/all.length*100):0;
+  return `<div class="pack-card added">
+    <div class="pack-top">
+      <div class="pack-emoji">${list.emoji||'📋'}</div>
+      <div class="pack-info">
+        <div class="pack-name">${list.name}</div>
+        <div class="pack-sub">${list.subtitle||all.length+' items'}</div>
+      </div>
+    </div>
+    <div class="pack-progress visible">
+      <div class="pack-ptrack"><div class="pack-pfill" style="width:${pct}%"></div></div>
+      <div class="pack-ptext">${rated} / ${all.length} rated${pct===100?' · Complete! 🎉':''}</div>
+    </div>
+    <div class="pack-actions">
+      <button class="pack-btn primary" onclick="openList('${id}','rate')">Rate →</button>
+      <button class="pack-btn" onclick="openList('${id}','results')">Results</button>
+      <button class="pack-btn danger" onclick="removeList('${id}')">Remove</button>
+    </div>
+  </div>`;
+}
+
+/* ── Rate ── */
+function renderRate() {
+  const id = state.activeId; if(!id) return;
+  const ratings = getRatings(id), sel = getSelected(id);
+  const custom = new Set(getCustomItems(id));
+  const hasSelected = !!sel;
+
+  document.getElementById('tier-rows').innerHTML = TIERS.map(tier=>{
+    const c=COL[tier.id];
+    const chips=ratings[tier.id].map(f=>
+      `<span class="rchip" onclick="reRate(${J(f)})" title="Click to re-rate"
+        style="background:${c.bg};border-color:${c.bd};color:${c.tx}">${f}</span>`
+    ).join('');
+    return `<div class="tier-row">
+      <button class="tbtn" onclick="assign('${tier.id}')" ${!hasSelected?'disabled':''}
+        style="background:${c.bg};border-color:${c.bd}">
+        <span class="tletter" style="color:${c.tx}">${tier.label}</span>
+        <span class="tsub" style="color:${c.tx}">${tier.sub}</span>
+      </button>
+      <div class="tdrop">${chips}</div>
+    </div>`;
+  }).join('');
+
+  const nowEl = document.getElementById('now-wrap');
+  if(sel) {
+    const isCust=custom.has(sel);
+    const badge=isCust?`<span style="font-size:9px;font-weight:600;padding:2px 6px;background:var(--b-bg);color:var(--b-tx);border-radius:4px;margin-left:6px;text-transform:uppercase">custom</span>`:'';
+    nowEl.innerHTML=`<div class="now-rating">
+      <span class="now-lbl">Now rating</span>
+      <span class="now-name">${sel}${badge}</span>
+      <span class="now-hint">← tap a tier</span>
+    </div>`;
+  } else { nowEl.innerHTML=''; }
+
+  const poolEl = document.getElementById('pool-wrap');
+  const unrated = getUnrated(id);
+  if(!unrated.length) {
+    poolEl.innerHTML=`<div class="done-banner">
+      <p>🎉 All ${getAllItems(id).length} items rated!</p>
+      <button class="btn primary" onclick="switchListTab('results')">See my full tier list →</button>
+    </div>`;
+    return;
+  }
+  const chips=unrated.map(f=>{
+    const isSel=f===sel, isCust=custom.has(f);
+    return `<button class="pchip${isSel?' sel':isCust?' custom':''}" onclick="selectItem(${J(f)})">${f}${isCust&&!isSel?' ✦':''}</button>`;
+  }).join('');
+  const rated=getRated(ratings).size;
+  poolEl.innerHTML=`<div class="pool-lbl">Unrated (${unrated.length} left) — select an item, then tap a tier above</div>
+    <div class="pool">${chips}</div>
+    ${rated>0?`<div class="btn-row"><button class="btn" onclick="switchListTab('results')">Preview results →</button></div>`:''}`;
+}
+
+/* ── Results ── */
+function renderResults() {
+  const id=state.activeId; if(!id) return;
+  const ratings=getRatings(id), unrated=getUnrated(id);
+  const active=TIERS.filter(t=>ratings[t.id].length>0);
+
+  document.getElementById('res-rows').innerHTML = active.length===0
+    ?`<p style="color:var(--text2);font-size:14px;padding:18px 0">No ratings yet — head to the Rate tab!</p>`
+    :active.map(tier=>{
+      const c=COL[tier.id];
+      const chips=ratings[tier.id].map(f=>`<span class="res-chip" style="background:${c.bg};color:${c.tx}">${f}</span>`).join('');
+      return `<div class="res-row">
+        <div class="res-tier" style="background:${c.bg}">
+          <span class="res-letter" style="color:${c.tx}">${tier.label}</span>
+          <span class="res-sub" style="color:${c.tx}">${tier.sub}</span>
+        </div>
+        <div class="res-chips">${chips}</div>
+      </div>`;
+    }).join('');
+
+  document.getElementById('res-unrated').innerHTML = unrated.length
+    ?`<div class="unrated-note">⚠ ${unrated.length} unrated: ${unrated.join(', ')}</div>`:'';
+
+  const lines=['🏆 '+getList(id)?.name+' — My Tier List',''];
+  TIERS.forEach(t=>{
+    if(ratings[t.id].length){
+      lines.push(`[ ${t.label} — ${TIER_LABELS[t.id]} ]`);
+      ratings[t.id].forEach(f=>lines.push('  • '+f));
+      lines.push('');
+    }
+  });
+  if(unrated.length) lines.push('Unrated: '+unrated.join(', '));
+  document.getElementById('save-text').value=lines.join('\n');
+}
+
+/* ── Manage ── */
+function renderManage() {
+  const id=state.activeId; if(!id) return;
+  const list=getList(id), customItems=getCustomItems(id), customSet=new Set(customItems);
+  const defaults=list?.items||[], ratings=getRatings(id);
+
+  const row=f=>{
+    const tierId=getTierOf(id,f), isCust=customSet.has(f);
+    const badge=isCust?'<span class="pill pill-custom">custom</span>':'';
+    const rated=tierId?`<span class="pill pill-rated">rated ${tierId}</span>`:'';
+    return `<div class="fl-item">
+      <span class="fl-name">${f}</span>${badge}${rated}
+      <button class="rm-btn" onclick="removeItem(${J(f)})" title="Remove">×</button>
+    </div>`;
+  };
+
+  let html='';
+  if(customItems.length){
+    html+=`<div class="sec-lbl">Custom (${customItems.length})</div>`;
+    html+=customItems.map(row).join('');
+    html+='<div class="divider"></div>';
+  }
+  html+=`<div class="sec-lbl">From pack (${defaults.length})</div>`;
+  html+=defaults.map(row).join('');
+  document.getElementById('manage-list').innerHTML=`<div class="flavor-list">${html}</div>`;
+}
+
+/* ── Helpers ── */
+function J(v){ return JSON.stringify(v); }
+
+function copyText() {
+  const ta=document.getElementById('save-text'); ta.select(); document.execCommand('copy');
+  const btn=event.currentTarget, orig=btn.textContent;
+  btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent=orig,1800);
+}
+
+let toastTimer;
+function showToast(msg) {
+  const el=document.getElementById('toast'); el.textContent=msg;
+  el.classList.add('show'); clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),3200);
+}
+
+/* ─── INIT ───────────────────────────────────────────────────────────── */
+renderAll();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js')
+      .then(() => console.log('Tier List: offline ready'))
+      .catch(e => console.warn('SW registration failed:', e));
+  });
+}
+</script>
+</body>
+</html>
