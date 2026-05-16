@@ -28,41 +28,6 @@ Import list packs (.json files) or build your own.
 
 ---
 
-## Updating the app
-
-To push an update:
-1. Make your changes to `index.html` (or any other file)
-2. Go to your GitHub repo
-3. Click the file → click the pencil icon to edit, or drag a new version onto the repo
-4. Commit the change
-
-Users get the update automatically the next time they open the app.
-
----
-
-## Creating and sharing list packs
-
-Edit `list-TEMPLATE.json` in any text editor:
-
-```json
-{
-  "name": "My List Name",
-  "emoji": "⭐",
-  "subtitle": "A short description",
-  "items": [
-    "Item One",
-    "Item Two",
-    "Item Three"
-  ]
-}
-```
-
-Save it as `list-whatever.json` and either:
-- **Import it** into the app via the "+ Import" button
-- **Upload it** to your GitHub repo so others can download and import it too
-
----
-
 ## Included list packs
 
 | File | Contents |
