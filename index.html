@@ -1,16 +1,12 @@
-<!-- Tier List App — MIT License — Copyright (c) 2026 D.K. Sable — github.com/[your-username]/tier-list-app -->
+<!-- Tier List App — MIT License — Copyright (c) 2026 D.K. Sable -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>Tier List App</title>
-
-<!-- PWA -->
 <link rel="manifest" href="manifest.json">
 <meta name="theme-color" content="#1a1a18">
-
-<!-- iOS install support -->
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="Tier List">
@@ -18,10 +14,10 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#faf9f6;--surface:#fff;--surface2:#f3f1ec;--surface3:#eceae3;
-  --border:rgba(0,0,0,.10);--border-med:rgba(0,0,0,.18);
-  --text:#1a1a18;--text2:#666660;--text3:#999993;
-  --radius:10px;--radius-lg:14px;--radius-xl:18px;
+  --bg:#faf9f6;--sur:#fff;--sur2:#f3f1ec;--sur3:#e8e5de;
+  --bdr:rgba(0,0,0,.10);--bdrm:rgba(0,0,0,.18);
+  --tx:#1a1a18;--tx2:#666660;--tx3:#999993;
+  --r:10px;--rl:14px;
   --s-bg:#FAEEDA;--s-bd:#BA7517;--s-tx:#633806;
   --a-bg:#EAF3DE;--a-bd:#3B6D11;--a-tx:#27500A;
   --b-bg:#E6F1FB;--b-bd:#185FA5;--b-tx:#0C447C;
@@ -30,9 +26,9 @@
   --f-bg:#FCEBEB;--f-bd:#A32D2D;--f-tx:#791F1F;
 }
 @media(prefers-color-scheme:dark){:root{
-  --bg:#1c1b18;--surface:#252420;--surface2:#2e2c28;--surface3:#383530;
-  --border:rgba(255,255,255,.09);--border-med:rgba(255,255,255,.16);
-  --text:#f0ede6;--text2:#a09d96;--text3:#6b6864;
+  --bg:#1c1b18;--sur:#252420;--sur2:#2e2c28;--sur3:#383530;
+  --bdr:rgba(255,255,255,.09);--bdrm:rgba(255,255,255,.16);
+  --tx:#f0ede6;--tx2:#a09d96;--tx3:#6b6864;
   --s-bg:#3a2800;--s-bd:#BA7517;--s-tx:#FAC775;
   --a-bg:#192800;--a-bd:#3B6D11;--a-tx:#C0DD97;
   --b-bg:#001830;--b-bd:#185FA5;--b-tx:#85B7EB;
@@ -40,769 +36,598 @@
   --d-bg:#2a1200;--d-bd:#993C1D;--d-tx:#F0997B;
   --f-bg:#280000;--f-bd:#A32D2D;--f-tx:#F09595;
 }}
-body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;background:var(--bg);color:var(--tx);min-height:100vh}
 
-/* HEADER */
-header{background:var(--surface);border-bottom:1px solid var(--border);padding:14px 20px;position:sticky;top:0;z-index:100}
-.header-inner{max-width:860px;margin:0 auto;display:flex;align-items:center;gap:12px}
-.app-logo{font-size:22px;line-height:1}
-.app-name{font-size:16px;font-weight:600;flex:1}
-.app-tag{font-size:11px;color:var(--text3);margin-top:1px}
+/* ── SCREENS ─────────────────────────────────────────── */
+.screen{display:none;flex-direction:column;min-height:100vh}
+.screen.on{display:flex}
 
-/* LIST HEADER (when inside a list) */
-.list-header{display:none;align-items:center;gap:10px;flex:1}
-.list-header.active{display:flex}
-.back-btn{padding:5px 10px;font-size:13px;border-radius:99px;border:1px solid var(--border-med);background:var(--surface2);color:var(--text2);cursor:pointer;white-space:nowrap;transition:all .15s}
-.back-btn:hover{background:var(--surface3)}
-.list-header-name{font-size:15px;font-weight:500;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
-.list-tabs{display:flex;gap:4px}
-.ltab{padding:5px 12px;font-size:12px;border-radius:99px;border:1px solid var(--border-med);background:var(--surface);color:var(--text2);cursor:pointer;transition:all .15s}
-.ltab.active{background:var(--text);color:var(--bg);border-color:var(--text)}
+/* ── TOP BAR ─────────────────────────────────────────── */
+.topbar{background:var(--sur);border-bottom:1px solid var(--bdr);padding:12px 16px;display:flex;align-items:center;gap:10px;flex-shrink:0}
+.topbar-title{font-size:16px;font-weight:600;flex:1;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.topbar-sub{font-size:11px;color:var(--tx3);margin-top:1px}
+.tbk{padding:6px 12px;font-size:13px;font-weight:500;border-radius:99px;border:1px solid var(--bdrm);background:var(--sur2);color:var(--tx);cursor:pointer;white-space:nowrap;flex-shrink:0}
+.tbk:hover{background:var(--sur3)}
+.tbk.hi{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.tbk.hi:hover{opacity:.85}
 
-/* PROGRESS BAR */
-.progress-bar-wrap{display:flex;align-items:center;gap:8px;padding:8px 20px 10px;max-width:860px;margin:0 auto;display:none}
-.progress-bar-wrap.active{display:flex}
-.ptrack{flex:1;height:4px;background:var(--surface2);border-radius:99px;overflow:hidden}
-.pfill{height:100%;background:#BA7517;border-radius:99px;transition:width .35s ease}
-.plabel{font-size:11px;color:var(--text3);white-space:nowrap}
+/* ── PROGRESS ─────────────────────────────────────────── */
+.prog-bar{padding:6px 16px 8px;background:var(--sur);border-bottom:1px solid var(--bdr);display:flex;align-items:center;gap:10px;flex-shrink:0}
+.prog-track{flex:1;height:4px;background:var(--sur2);border-radius:99px;overflow:hidden}
+.prog-fill{height:100%;background:#BA7517;border-radius:99px;transition:width .3s}
+.prog-lbl{font-size:11px;color:var(--tx3);white-space:nowrap}
 
-main{max-width:860px;margin:0 auto;padding:20px 16px 80px}
-.view{display:none}
-.view.active{display:block}
+/* ── LIST TABS ─────────────────────────────────────────── */
+.list-tabs{display:flex;gap:4px;padding:10px 16px 0;background:var(--sur);border-bottom:1px solid var(--bdr);flex-shrink:0}
+.ltab{padding:6px 14px;font-size:13px;border-radius:8px 8px 0 0;border:1px solid transparent;background:transparent;color:var(--tx2);cursor:pointer}
+.ltab.on{background:var(--bg);border-color:var(--bdr);border-bottom-color:var(--bg);color:var(--tx);font-weight:500;margin-bottom:-1px;position:relative;z-index:1}
 
-/* ── LIBRARY ── */
-.lib-section-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text3);margin:0 0 10px}
-.import-row{display:flex;gap:8px;margin-bottom:28px;align-items:center;flex-wrap:wrap}
-.import-row p{font-size:13px;color:var(--text2);flex:1}
+/* ── SCROLL AREA ─────────────────────────────────────────── */
+.scroll{flex:1;overflow-y:auto;padding:16px}
 
-.pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:12px;margin-bottom:32px}
+/* ── LIBRARY ─────────────────────────────────────────── */
+.sec-head{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--tx3);margin-bottom:10px}
+.pack-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:10px;margin-bottom:28px}
+.card{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:16px;display:flex;flex-direction:column;gap:10px}
+.card-top{display:flex;gap:10px;align-items:flex-start}
+.card-emoji{font-size:26px;line-height:1;flex-shrink:0}
+.card-name{font-size:14px;font-weight:500}
+.card-sub{font-size:12px;color:var(--tx3);margin-top:2px}
+.card-prog-track{height:4px;background:var(--sur2);border-radius:99px;overflow:hidden;margin-bottom:3px}
+.card-prog-fill{height:100%;background:#BA7517;border-radius:99px}
+.card-prog-lbl{font-size:11px;color:var(--tx3)}
+.card-btns{display:flex;gap:6px;flex-wrap:wrap}
+.cbtn{padding:6px 12px;font-size:12px;font-weight:500;border-radius:99px;border:1px solid var(--bdrm);background:var(--sur2);color:var(--tx);cursor:pointer;white-space:nowrap}
+.cbtn:hover{background:var(--sur3)}
+.cbtn.p{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.cbtn.p:hover{opacity:.85}
+.cbtn.d{color:var(--f-tx);border-color:var(--f-bd)}
+.cbtn.d:hover{background:var(--f-bg)}
+.empty-state{text-align:center;padding:28px 20px;background:var(--sur);border:1px dashed var(--bdrm);border-radius:var(--rl);margin-bottom:24px}
+.empty-state p{font-size:14px;color:var(--tx2)}
 
-.pack-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-xl);padding:18px;display:flex;flex-direction:column;gap:10px;transition:border-color .15s}
-.pack-card:hover{border-color:var(--border-med)}
-.pack-card.added{border-color:var(--border-med)}
-
-.pack-top{display:flex;align-items:flex-start;gap:10px}
-.pack-emoji{font-size:28px;line-height:1;flex-shrink:0;margin-top:2px}
-.pack-info{flex:1;min-width:0}
-.pack-name{font-size:14px;font-weight:500;margin-bottom:2px}
-.pack-sub{font-size:12px;color:var(--text3)}
-
-.pack-progress{display:none}
-.pack-progress.visible{display:block}
-.pack-ptrack{height:4px;background:var(--surface2);border-radius:99px;overflow:hidden;margin-bottom:4px}
-.pack-pfill{height:100%;background:#BA7517;border-radius:99px;transition:width .35s}
-.pack-ptext{font-size:11px;color:var(--text3)}
-
-.pack-actions{display:flex;gap:6px;margin-top:2px}
-.pack-btn{padding:6px 14px;font-size:12px;font-weight:500;border-radius:99px;border:1px solid var(--border-med);background:var(--surface2);color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap}
-.pack-btn:hover{background:var(--surface3)}
-.pack-btn.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
-.pack-btn.primary:hover{opacity:.85}
-.pack-btn.danger{color:var(--f-tx);border-color:var(--f-bd)}
-.pack-btn.danger:hover{background:var(--f-bg)}
-.pack-btn.add-btn-lib{background:transparent;border-color:var(--border-med);color:var(--text2)}
-.pack-btn.add-btn-lib:hover{background:var(--surface3);color:var(--text)}
-
-.empty-lib{text-align:center;padding:32px 20px;background:var(--surface);border:1px dashed var(--border-med);border-radius:var(--radius-xl);margin-bottom:28px}
-.empty-lib p{font-size:14px;color:var(--text2);margin-bottom:12px}
-
-/* ── TIER RATING ── */
+/* ── TIER ROWS ─────────────────────────────────────────── */
 .tier-row{display:flex;gap:8px;margin-bottom:8px;align-items:flex-start}
-.tbtn{min-width:54px;height:54px;border-radius:var(--radius);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;flex-shrink:0;cursor:pointer;transition:transform .1s,opacity .15s;border:1px solid}
-.tbtn:active{transform:scale(0.95)}
-.tbtn:disabled{opacity:.4;cursor:default}
-.tletter{font-size:18px;font-weight:600;line-height:1}
+.tier-btn{width:58px;min-height:58px;border-radius:var(--r);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;flex-shrink:0;cursor:pointer;border:1px solid;-webkit-tap-highlight-color:transparent}
+.tier-btn:disabled{opacity:.4;cursor:default}
+.tier-btn:not(:disabled):active{transform:scale(.95)}
+.tletter{font-size:19px;font-weight:600;line-height:1}
 .tsub{font-size:8px;opacity:.85;text-transform:uppercase;letter-spacing:.04em}
-.tdrop{flex:1;min-height:54px;border:1px solid var(--border);border-radius:var(--radius);padding:7px;display:flex;flex-wrap:wrap;gap:5px;align-content:center;background:var(--surface)}
-.rchip{font-size:12px;padding:4px 4px 4px 9px;border-radius:99px;border:1px solid;user-select:none;display:inline-flex;align-items:center;gap:4px}
-.rchip-label{cursor:pointer;transition:opacity .15s}
-.rchip-label:hover{opacity:.65}
-.rchip-x{width:18px;height:18px;border-radius:99px;border:none;background:rgba(0,0,0,.12);color:inherit;cursor:pointer;font-size:12px;display:flex;align-items:center;justify-content:center;line-height:1;padding:0;flex-shrink:0;transition:background .15s}
-.rchip-x:hover{background:rgba(0,0,0,.28)}
+.tier-drop{flex:1;min-height:58px;border:1px solid var(--bdr);border-radius:var(--r);padding:7px;display:flex;flex-wrap:wrap;gap:5px;align-content:center;background:var(--sur)}
 
-.now-rating{margin-top:14px;padding:11px 15px;background:var(--surface);border:1px solid var(--border-med);border-radius:var(--radius-lg);display:flex;align-items:center;gap:10px}
-.now-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
+/* ── CHIPS ─────────────────────────────────────────── */
+.rchip{font-size:12px;padding:3px 4px 3px 9px;border-radius:99px;border:1px solid;display:inline-flex;align-items:center;gap:3px}
+.rchip-name{cursor:pointer;-webkit-tap-highlight-color:transparent}
+.rchip-name:hover{opacity:.7}
+.rchip-del{width:18px;height:18px;border-radius:99px;border:none;background:rgba(0,0,0,.15);color:inherit;cursor:pointer;font-size:11px;display:flex;align-items:center;justify-content:center;padding:0;flex-shrink:0;-webkit-tap-highlight-color:transparent}
+.rchip-del:hover{background:rgba(0,0,0,.3)}
+.now-box{margin-top:12px;padding:10px 14px;background:var(--sur);border:1px solid var(--bdrm);border-radius:var(--rl);display:flex;align-items:center;gap:10px}
+.now-lbl{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.06em;flex-shrink:0}
 .now-name{font-size:15px;font-weight:500;flex:1}
-.now-hint{font-size:11px;color:var(--text3);animation:pulse 2.5s ease-in-out infinite}
+.now-hint{font-size:11px;color:var(--tx3);animation:pulse 2.5s ease-in-out infinite}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
-
-.pool-lbl{font-size:11px;color:var(--text3);margin:14px 0 7px;text-transform:uppercase;letter-spacing:.05em}
+.pool-lbl{font-size:11px;color:var(--tx3);margin:14px 0 7px;text-transform:uppercase;letter-spacing:.05em}
 .pool{display:flex;flex-wrap:wrap;gap:5px}
-.pchip{font-size:12.5px;padding:6px 12px;border-radius:99px;border:1px solid var(--border-med);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s}
-.pchip:hover{background:var(--surface2)}
-.pchip.sel{background:var(--text);color:var(--bg);border-color:var(--text);font-weight:500}
-.pchip.custom{border-color:var(--b-bd);color:var(--b-tx);background:var(--b-bg)}
-@media(prefers-color-scheme:dark){.pchip.custom{border-color:var(--b-bd);color:var(--b-tx);background:var(--b-bg)}}
+.pchip{font-size:12.5px;padding:6px 12px;border-radius:99px;border:1px solid var(--bdrm);background:var(--sur);color:var(--tx);cursor:pointer;-webkit-tap-highlight-color:transparent}
+.pchip:hover,.pchip:active{background:var(--sur2)}
+.pchip.sel{background:var(--tx);color:var(--bg);border-color:var(--tx);font-weight:500}
+.pchip.cust{border-color:var(--b-bd);color:var(--b-tx);background:var(--b-bg)}
+.done-box{text-align:center;padding:24px 0}
+.done-box p{font-size:14px;color:var(--tx2);margin-bottom:12px}
 
-.done-banner{text-align:center;padding:22px 0}
-.done-banner p{font-size:14px;color:var(--text2);margin-bottom:12px}
-
-/* ── RESULTS ── */
-.res-row{display:flex;margin-bottom:6px;border-radius:var(--radius);overflow:hidden;border:1px solid var(--border)}
-.res-tier{width:54px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0;flex-shrink:0}
+/* ── RESULTS ─────────────────────────────────────────── */
+.res-row{display:flex;margin-bottom:5px;border-radius:var(--r);overflow:hidden;border:1px solid var(--bdr)}
+.res-tier{width:58px;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:10px 0;flex-shrink:0}
 .res-letter{font-size:20px;font-weight:600;line-height:1}
 .res-sub{font-size:7.5px;opacity:.8;text-transform:uppercase;letter-spacing:.04em;margin-top:2px}
-.res-chips{flex:1;padding:8px 10px;background:var(--surface);display:flex;flex-wrap:wrap;gap:5px;align-content:center}
+.res-chips{flex:1;padding:8px 10px;background:var(--sur);display:flex;flex-wrap:wrap;gap:5px;align-content:center}
 .res-chip{font-size:12px;padding:3px 9px;border-radius:99px}
-.unrated-note{margin-top:12px;padding:10px 14px;background:var(--surface2);border-radius:var(--radius);font-size:12px;color:var(--text2)}
-
-.save-box{margin-top:22px;padding:16px;background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg)}
+.unrated-note{margin-top:10px;padding:10px 14px;background:var(--sur2);border-radius:var(--r);font-size:12px;color:var(--tx2)}
+.save-box{margin-top:20px;padding:16px;background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl)}
 .save-box h3{font-size:13px;font-weight:500;margin-bottom:6px}
-.save-box p{font-size:12px;color:var(--text2);margin-bottom:9px}
-.save-box textarea{width:100%;height:110px;font-size:11px;font-family:monospace;background:var(--surface2);border:1px solid var(--border);border-radius:8px;padding:9px;color:var(--text2);resize:none}
+.save-box p{font-size:12px;color:var(--tx2);margin-bottom:9px}
+.save-box textarea{width:100%;height:110px;font-size:11px;font-family:monospace;background:var(--sur2);border:1px solid var(--bdr);border-radius:8px;padding:9px;color:var(--tx2);resize:none}
 
-/* ── MANAGE ── */
-.manage-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius-lg);padding:18px;margin-bottom:12px}
-.manage-card h3{font-size:14px;font-weight:500;margin-bottom:12px}
+/* ── MANAGE ─────────────────────────────────────────── */
+.mcard{background:var(--sur);border:1px solid var(--bdr);border-radius:var(--rl);padding:16px;margin-bottom:12px}
+.mcard h3{font-size:14px;font-weight:500;margin-bottom:12px}
 .add-row{display:flex;gap:8px}
-.add-input{flex:1;padding:9px 14px;font-size:14px;border-radius:99px;border:1px solid var(--border-med);background:var(--surface2);color:var(--text);outline:none;transition:box-shadow .15s}
-.add-input:focus{box-shadow:0 0 0 3px rgba(0,0,0,.06)}
-.add-input::placeholder{color:var(--text3)}
-.add-submit{padding:9px 18px;font-size:13px;font-weight:500;border-radius:99px;border:none;background:var(--text);color:var(--bg);cursor:pointer;transition:opacity .15s,transform .1s;white-space:nowrap}
-.add-submit:hover{opacity:.85}
-.add-submit:active{transform:scale(.97)}
+.add-inp{flex:1;padding:9px 14px;font-size:14px;border-radius:99px;border:1px solid var(--bdrm);background:var(--sur2);color:var(--tx);outline:none}
+.add-inp::placeholder{color:var(--tx3)}
+.add-go{padding:9px 18px;font-size:13px;font-weight:500;border-radius:99px;border:none;background:var(--tx);color:var(--bg);cursor:pointer;white-space:nowrap}
 .add-err{font-size:12px;color:var(--f-tx);margin-top:6px;min-height:16px}
-.flavor-list{display:flex;flex-direction:column}
-.fl-item{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:var(--radius);transition:background .12s}
-.fl-item:hover{background:var(--surface2)}
+.fl-list{display:flex;flex-direction:column}
+.fl-item{display:flex;align-items:center;gap:7px;padding:8px 10px;border-radius:var(--r)}
+.fl-item:hover{background:var(--sur2)}
 .fl-name{flex:1;font-size:13px}
-.pill{font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
-.pill-custom{background:var(--b-bg);color:var(--b-tx)}
-.pill-rated{background:var(--surface2);color:var(--text3);border:1px solid var(--border-med)}
-.rm-btn{width:26px;height:26px;border-radius:99px;border:1px solid var(--border-med);background:transparent;color:var(--text3);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:all .15s;line-height:1}
+.pill{font-size:9px;font-weight:600;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
+.pill-c{background:var(--b-bg);color:var(--b-tx)}
+.pill-r{background:var(--sur2);color:var(--tx3);border:1px solid var(--bdrm)}
+.rm-btn{width:26px;height:26px;border-radius:99px;border:1px solid var(--bdrm);background:transparent;color:var(--tx3);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .rm-btn:hover{border-color:var(--f-bd);color:var(--f-tx);background:var(--f-bg)}
-.sec-lbl{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 5px}
-.sec-lbl:first-child{margin-top:0}
-.divider{height:1px;background:var(--border);margin:10px 0}
+.sec-lbl{font-size:11px;color:var(--tx3);text-transform:uppercase;letter-spacing:.05em;margin:12px 0 5px}
+.divider{height:1px;background:var(--bdr);margin:10px 0}
 
-/* SHARED BUTTONS */
+/* ── SHARED ─────────────────────────────────────────── */
 .btn-row{display:flex;gap:7px;flex-wrap:wrap;margin-top:12px}
-.btn{display:inline-flex;align-items:center;gap:5px;padding:8px 16px;font-size:13px;font-weight:500;border-radius:99px;border:1px solid var(--border-med);background:var(--surface);color:var(--text);cursor:pointer;transition:all .15s;white-space:nowrap}
-.btn:hover{background:var(--surface2)}
-.btn:active{transform:scale(.97)}
-.btn.primary{background:var(--text);color:var(--bg);border-color:var(--text)}
-.btn.primary:hover{opacity:.86}
-
-/* IMPORT ERROR TOAST */
-.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a18;color:#f0ede6;padding:10px 18px;border-radius:99px;font-size:13px;transition:transform .3s ease;z-index:999;white-space:nowrap;pointer-events:none}
-.toast.show{transform:translateX(-50%) translateY(0)}
+.btn{display:inline-flex;align-items:center;padding:8px 16px;font-size:13px;font-weight:500;border-radius:99px;border:1px solid var(--bdrm);background:var(--sur);color:var(--tx);cursor:pointer}
+.btn:hover{background:var(--sur2)}
+.btn.p{background:var(--tx);color:var(--bg);border-color:var(--tx)}
+.btn.p:hover{opacity:.86}
+.toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1a1a18;color:#f0ede6;padding:10px 18px;border-radius:99px;font-size:13px;transition:transform .3s;z-index:999;pointer-events:none;white-space:nowrap}
+.toast.on{transform:translateX(-50%) translateY(0)}
 
 @media(max-width:480px){
-  .app-name{font-size:14px}
-  .tbtn{min-width:48px;height:48px}
+  .tbk{padding:5px 10px;font-size:12px}
+  .tier-btn{width:50px;min-height:50px}
   .tletter{font-size:16px}
-  .ltab{padding:5px 9px;font-size:11px}
-  .pack-grid{grid-template-columns:1fr}
 }
 </style>
 </head>
 <body>
 
-<header>
-  <div class="header-inner">
-    <div class="app-logo" id="logo" onclick="goHome()" style="cursor:pointer" title="Home">🏆</div>
-    <div id="lib-header" style="flex:1">
-      <div class="app-name">Tier List</div>
-      <div class="app-tag">Rate anything, one list at a time</div>
+<!-- ══ LIBRARY SCREEN ══════════════════════════════════ -->
+<div class="screen on" id="scr-lib">
+  <div class="topbar">
+    <div>
+      <div class="topbar-title">🏆 Tier List</div>
+      <div class="topbar-sub">Rate anything, one list at a time</div>
     </div>
-    <div class="list-header" id="list-header">
-      <button class="back-btn" onclick="goHome()">← All Lists</button>
-      <span class="list-header-name" id="list-header-name"></span>
-      <div class="list-tabs">
-        <button class="ltab active" id="ltab-rate"    onclick="switchListTab('rate')">Rate</button>
-        <button class="ltab"        id="ltab-results" onclick="switchListTab('results')">Results</button>
-        <button class="ltab"        id="ltab-manage"  onclick="switchListTab('manage')">Flavors</button>
-      </div>
-    </div>
-    <label class="btn primary" style="cursor:pointer" title="Import a .json list pack">
+    <label class="tbk hi" style="cursor:pointer">
       + Import
-      <input type="file" accept=".json" style="display:none" onchange="handleImport(event)">
+      <input type="file" accept=".json" style="display:none" id="file-input">
     </label>
   </div>
-</header>
-<div id="progress-bar-wrap" class="progress-bar-wrap">
-  <div class="ptrack"><div class="pfill" id="pfill" style="width:0%"></div></div>
-  <span class="plabel" id="plabel">0 / 0</span>
+  <div class="scroll">
+    <div id="my-lists"></div>
+    <div class="sec-head">Available packs</div>
+    <div class="pack-grid" id="pack-grid"></div>
+    <div style="margin-top:28px;padding-top:18px;border-top:1px solid var(--bdr);text-align:center">
+      <button class="btn" id="clear-btn" style="font-size:12px;color:var(--tx3)">🗑 Clear all app data</button>
+      <p style="font-size:11px;color:var(--tx3);margin-top:7px">Removes all ratings & imported lists. Use if the app gets stuck.</p>
+    </div>
+  </div>
 </div>
 
-<main>
-
-  <!-- ── LIBRARY ── -->
-  <div class="view active" id="view-library">
-    <div id="my-lists-wrap"></div>
-    <div>
-      <div class="lib-section-title">Available packs</div>
-      <div class="pack-grid" id="builtin-grid"></div>
-    </div>
-    <div style="margin-top:32px;padding-top:20px;border-top:1px solid var(--border);text-align:center">
-      <button class="btn" onclick="clearAllData()" style="font-size:12px;color:var(--text3)">🗑 Clear all app data</button>
-      <p style="font-size:11px;color:var(--text3);margin-top:8px">Removes all ratings & imported lists. Use if the app gets stuck.</p>
+<!-- ══ LIST SCREEN ══════════════════════════════════════ -->
+<div class="screen" id="scr-list">
+  <div class="topbar">
+    <button class="tbk" id="back-btn">← Lists</button>
+    <div style="flex:1;min-width:0">
+      <div class="topbar-title" id="list-title"></div>
     </div>
   </div>
+  <div class="prog-bar">
+    <div class="prog-track"><div class="prog-fill" id="prog-fill" style="width:0%"></div></div>
+    <span class="prog-lbl" id="prog-lbl">0 / 0</span>
+  </div>
+  <div class="list-tabs">
+    <button class="ltab on" id="ltab-rate"    data-tab="rate">Rate</button>
+    <button class="ltab"    id="ltab-results" data-tab="results">Results</button>
+    <button class="ltab"    id="ltab-manage"  data-tab="manage">Flavors</button>
+  </div>
 
-  <!-- ── RATE ── -->
-  <div class="view" id="view-rate">
+  <!-- Rate tab -->
+  <div class="scroll" id="tab-rate">
     <div id="tier-rows"></div>
-    <div id="now-wrap"></div>
-    <div id="pool-wrap"></div>
+    <div id="now-box"></div>
+    <div id="pool"></div>
   </div>
 
-  <!-- ── RESULTS ── -->
-  <div class="view" id="view-results">
+  <!-- Results tab -->
+  <div class="scroll" id="tab-results" style="display:none">
     <div id="res-rows"></div>
     <div id="res-unrated"></div>
     <div class="save-box">
       <h3>Save your rankings</h3>
-      <p>Copy the text below to save your tier list.</p>
-      <textarea id="save-text" readonly></textarea>
+      <p>Copy the text below to keep a record.</p>
+      <textarea id="save-txt" readonly></textarea>
       <div class="btn-row">
-        <button class="btn" onclick="copyText()">📋 Copy text</button>
-        <button class="btn" onclick="resetRatings()">↺ Reset ratings</button>
+        <button class="btn" id="copy-btn">📋 Copy</button>
+        <button class="btn" id="reset-btn">↺ Reset ratings</button>
       </div>
     </div>
   </div>
 
-  <!-- ── MANAGE ── -->
-  <div class="view" id="view-manage">
-    <div class="manage-card">
+  <!-- Manage tab -->
+  <div class="scroll" id="tab-manage" style="display:none">
+    <div class="mcard">
       <h3>Add an item</h3>
       <div class="add-row">
-        <input class="add-input" id="add-input" type="text" placeholder="Enter a name…" maxlength="80"
-          onkeydown="if(event.key==='Enter') addItem()">
-        <button class="add-submit" onclick="addItem()">Add</button>
+        <input class="add-inp" id="add-inp" type="text" placeholder="Enter a name…" maxlength="80">
+        <button class="add-go" id="add-btn">Add</button>
       </div>
       <div class="add-err" id="add-err"></div>
     </div>
-    <div class="manage-card">
+    <div class="mcard">
       <h3>All items</h3>
-      <div id="manage-list"></div>
+      <div id="fl-list"></div>
     </div>
   </div>
-
-</main>
+</div>
 
 <div class="toast" id="toast"></div>
 
 <script>
-/* ─── BUILT-IN PACKS ─────────────────────────────────────────────────── */
-const BUILTIN_PACKS = [
-  {
-    id:"cheesecake-factory",name:"The Cheesecake Factory",emoji:"🍰",
-    subtitle:"All 34 cheesecake flavors",
-    items:["Original","Fresh Strawberry","Godiva® Chocolate","Oreo® Dream Extreme",
-      "Reese's® PB Chocolate Cake","Cookie Dough Lover's","Coconut Cream Pie",
-      "Pineapple Upside-Down","Classic Basque","Adam's PB Cup Fudge Ripple",
-      "Very Cherry Chocolate","Cinnabon® Cinnamon Swirl","Salted Caramel",
-      "Dulce De Leche Caramel","Mango Key Lime","Fresh Banana Cream","Chocolate Mousse",
-      "Snickers® Caramelicious","Chocolate Tuxedo Cream","Hershey's® Chocolate Bar",
-      "Key Lime","Low-licious","Low-licious w/ Strawberries","Caramel Pecan Turtle",
-      "White Choc Raspberry Truffle","Tiramisu","Red Velvet","Lemon Raspberry Cream",
-      "Celebration","Lemon Meringue","S'mores","Pumpkin",
-      "Peach Perfect w/ Raspberry","Triple Berry Bliss"]
-  },
-  {
-    id:"jenis-ice-cream",name:"Jeni's Splendid Ice Creams",emoji:"🍦",
-    subtitle:"Signature & seasonal flavors",
-    items:["Brambleberry Crisp","Brown Butter Almond Brittle","Buttercream Birthday Cake",
-      "Chocolate Chip Cookie Dough","Honey Vanilla Bean","Darkest Chocolate",
-      "The Milkiest Chocolate","Lemon Blueberry Buttermilk","Ohio Strawberry",
-      "Candy Bar Pie","Salty Caramel","Sweet Cream Biscuits & Peach Jam",
-      "Bay Leaf Cheesecake","Wildberry Lavender","Black Coffee","Sweet Cream",
-      "After Midnight","Pineapple Upside-Down Cake","Lemon Curd Shortbread",
-      "Brioche Donut Custard","Pancakes & Maple Syrup","Roasted Peanut Butter & Chocolate",
-      "Queen Charlotte's Rose Almond Cake","Cold Brew & Coconut Cream","Snow Cone Sorbet",
-      "Ted Lasso Shortbread Cookie","Gooey Butter Cake","Sugar Cookie",
-      "Citrus Glazed Pound Cake","Raspberry Rhubarb Delight","Tropical Bloom"]
-  },
-  {
-    id:"pizza-toppings",name:"Pizza Toppings",emoji:"🍕",
-    subtitle:"Rate all 40 toppings",
-    items:["Pepperoni","Italian Sausage","Bacon","Ham","Prosciutto","Salami","Anchovies",
-      "Grilled Chicken","Ground Beef","Meatballs","Spicy Soppressata","Chorizo",
-      "Bell Peppers","Red Onion","Mushrooms","Black Olives","Green Olives","Jalapeños",
-      "Banana Peppers","Fresh Spinach","Cherry Tomatoes","Roasted Garlic","Artichoke Hearts",
-      "Sun-dried Tomatoes","Caramelized Onions","Arugula","Broccoli",
-      "Fresh Mozzarella","Ricotta","Parmesan","Gorgonzola","Feta","Goat Cheese","Burrata",
-      "Classic Marinara","Pesto","Alfredo","BBQ Sauce","Olive Oil & Garlic","Buffalo Sauce"]
-  }
+/* ── DATA ────────────────────────────────────────────── */
+const PACKS = [
+  {id:'cheesecake-factory',name:'The Cheesecake Factory',emoji:'🍰',sub:'All 34 cheesecake flavors',items:['Original','Fresh Strawberry','Godiva® Chocolate','Oreo® Dream Extreme',"Reese's® PB Chocolate Cake","Cookie Dough Lover's",'Coconut Cream Pie','Pineapple Upside-Down','Classic Basque','Adam\'s PB Cup Fudge Ripple','Very Cherry Chocolate','Cinnabon® Cinnamon Swirl','Salted Caramel','Dulce De Leche Caramel','Mango Key Lime','Fresh Banana Cream','Chocolate Mousse','Snickers® Caramelicious','Chocolate Tuxedo Cream',"Hershey's® Chocolate Bar",'Key Lime','Low-licious','Low-licious w/ Strawberries','Caramel Pecan Turtle','White Choc Raspberry Truffle','Tiramisu','Red Velvet','Lemon Raspberry Cream','Celebration','Lemon Meringue',"S'mores",'Pumpkin','Peach Perfect w/ Raspberry','Triple Berry Bliss']},
+  {id:'jenis-ice-cream',name:"Jeni's Splendid Ice Creams",emoji:'🍦',sub:'Signature & seasonal flavors',items:['Brambleberry Crisp','Brown Butter Almond Brittle','Buttercream Birthday Cake','Chocolate Chip Cookie Dough','Honey Vanilla Bean','Darkest Chocolate','The Milkiest Chocolate','Lemon Blueberry Buttermilk','Ohio Strawberry','Candy Bar Pie','Salty Caramel','Sweet Cream Biscuits & Peach Jam','Bay Leaf Cheesecake','Wildberry Lavender','Black Coffee','Sweet Cream','After Midnight','Pineapple Upside-Down Cake','Lemon Curd Shortbread','Brioche Donut Custard','Pancakes & Maple Syrup','Roasted Peanut Butter & Chocolate',"Queen Charlotte's Rose Almond Cake",'Cold Brew & Coconut Cream','Snow Cone Sorbet','Ted Lasso Shortbread Cookie','Gooey Butter Cake','Sugar Cookie','Citrus Glazed Pound Cake','Raspberry Rhubarb Delight','Tropical Bloom']},
+  {id:'pizza-toppings',name:'Pizza Toppings',emoji:'🍕',sub:'Rate all 40 toppings',items:['Pepperoni','Italian Sausage','Bacon','Ham','Prosciutto','Salami','Anchovies','Grilled Chicken','Ground Beef','Meatballs','Spicy Soppressata','Chorizo','Bell Peppers','Red Onion','Mushrooms','Black Olives','Green Olives','Jalapeños','Banana Peppers','Fresh Spinach','Cherry Tomatoes','Roasted Garlic','Artichoke Hearts','Sun-dried Tomatoes','Caramelized Onions','Arugula','Broccoli','Fresh Mozzarella','Ricotta','Parmesan','Gorgonzola','Feta','Goat Cheese','Burrata','Classic Marinara','Pesto','Alfredo','BBQ Sauce','Olive Oil & Garlic','Buffalo Sauce']},
+  {id:'fast-food-fries',name:'Fast Food French Fries',emoji:'🍟',sub:'27 chains — whose fries reign supreme?',items:["McDonald's Classic Fries","Chick-fil-A Waffle Fries","Wendy's Fresh-Cut Fries","Burger King Fries","Arby's Curly Fries","Arby's Crinkle-Cut Fries","Five Guys Regular Fries","Five Guys Cajun Fries","Shake Shack Crinkle-Cut Fries","In-N-Out Regular Fries","In-N-Out Animal Style Fries","Whataburger Fries","Jack in the Box Regular Fries","Jack in the Box Seasoned Curly Fries","Sonic Regular Fries","Sonic Tater Tots","Popeyes Cajun Fries","Culver's Crinkle-Cut Fries","Raising Cane's Crinkle-Cut Fries","Wingstop Louisiana Seasoned Fries","Rally's / Checker's Seasoned Fries","Freddy's Thin & Crispy Fries","Steak 'n Shake Skinny Fries","Dairy Queen Fries","Zaxby's Seasoned Fries","Del Taco Fries","Red Robin Bottomless Steak Fries"]},
+  {id:'fast-food-burgers',name:'Fast Food Burgers',emoji:'🍔',sub:'25 iconic burgers — rank the legends',items:["Big Mac (McDonald's)","Double Big Mac (McDonald's)","Quarter Pounder with Cheese (McDonald's)","McDouble (McDonald's)","Whopper (Burger King)","Double Whopper (Burger King)","Baconator (Wendy's)","Dave's Single (Wendy's)","Double-Double (In-N-Out)","Double-Double Animal Style (In-N-Out)","ShackBurger (Shake Shack)","SmokeShack (Shake Shack)","ButterBurger (Culver's)","Classic Smash (Smashburger)","Original Burger (Five Guys)","Original Double (Freddy's)","Steakburger Double (Steak 'n Shake)","Sourdough Jack (Jack in the Box)","Jumbo Jack (Jack in the Box)","Famous Star (Carl's Jr. / Hardee's)","Thickburger (Carl's Jr. / Hardee's)","Big Buford (Rally's / Checker's)","Patty Melt (Whataburger)","Whataburger Classic","Big Hot Mess (Sonic)"]},
+  {id:'fast-food-chicken',name:'Fast Food Chicken Sandwiches',emoji:'🐔',sub:'22 sandwiches — the great chicken wars',items:["Chick-fil-A Original Chicken Sandwich","Chick-fil-A Spicy Deluxe","Popeyes Classic Chicken Sandwich","Popeyes Spicy Chicken Sandwich","McDonald's McChicken","McDonald's Crispy Chicken Sandwich","Wendy's Classic Chicken Sandwich","Wendy's Spicy Chicken Sandwich","Burger King Royal Crispy Chicken","KFC Chicken Sandwich","Shake Shack Chick'n Shack","Zaxby's Signature Sandwich","Whataburger Crispy Chicken Sandwich","Culver's Crispy Chicken Sandwich","Bojangles' Cajun Filet Biscuit","Hardee's Hand-Breaded Chicken Sandwich","Jack in the Box Crispy Chicken Sandwich","Sonic Crispy Chicken Sandwich","Arby's Classic Crispy Chicken","Dairy Queen Crispy Chicken Sandwich","Slim Chickens Classic Sandwich","PDQ Crispy Chicken Sandwich"]},
+  {id:'sub-shops',name:'Sub Shops',emoji:'🥖',sub:'Rate every major sandwich chain',items:['Subway',"Jersey Mike's","Firehouse Subs","Jimmy John's","Potbelly","Quiznos","Which Wich","Capriotti's","Jason's Deli","McAlister's Deli","Penn Station East Coast Subs","Charley's Grilled Subs","Port of Subs","Blimpie","Schlotzsky's","Larry's Giant Subs","Mr. Goodcents","Wawa Hoagies"]},
+  {id:'chain-restaurants',name:'Chain Restaurants (Sit-Down)',emoji:'🍽️',sub:'25 chains from Olive Garden to Benihana',items:['Olive Garden',"Chili's","Applebee's","TGI Fridays","Red Lobster","Outback Steakhouse","Texas Roadhouse","LongHorn Steakhouse","The Cheesecake Factory","Red Robin","Cracker Barrel","Waffle House","IHOP","Denny's","Bob Evans","Golden Corral","Perkins","Bonefish Grill","Carrabba's Italian Grill","Bahama Breeze","P.F. Chang's","Benihana","First Watch","Yard House","BJ's Restaurant & Brewhouse"]},
+  {id:'regional-chains',name:'Regional Chains',emoji:'📍',sub:"30 beloved chains you can't find everywhere",items:['In-N-Out Burger (West)','Whataburger (TX/South)','Cook Out (Southeast)','Zaxby\'s (Southeast)','Bojangles\' (Carolinas/Southeast)','Raising Cane\'s (South, expanding)','Pollo Tropical (FL/Southeast)','PDQ (FL/Southeast)','Krystal (Deep South)',"Steak 'n Shake (Midwest/South)",'Culver\'s (Midwest)','White Castle (Midwest/Northeast)','Portillo\'s (Midwest)','Freddy\'s Frozen Custard (Midwest, expanding)','Runza (Nebraska/Great Plains)','Braum\'s (OK/TX)','Taco John\'s (Midwest)','Jack in the Box (West/Southwest)','Del Taco (West/Southwest)','Carl\'s Jr. / Hardee\'s (West/Southeast)','Fatburger (West)','Burgerville (Pacific Northwest)','Dick\'s Drive-In (Seattle)','Rally\'s / Checker\'s (Midwest/Southeast)','Wawa (Mid-Atlantic)','Sheetz (Mid-Atlantic/Appalachian)','Friendly\'s (New England)','Shake Shack (Northeast, expanding)','Roy Rogers (Mid-Atlantic)','Taco Bueno (TX/OK/KS)']},
+  {id:'chicago-classics',name:'Chicago Classics',emoji:'🏙️',sub:'25 iconic Chicago restaurants & institutions',items:["Lou Malnati's (deep dish pizza)","Giordano's (deep dish pizza)","Gino's East (deep dish pizza)","Pequod's Pizza (pan pizza)","Portillo's (Italian beef & hot dogs)","Al's #1 Italian Beef","The Berghoff (German-American, est. 1898)","Lou Mitchell's (diner, est. 1923)","Billy Goat Tavern (burgers)","Gene & Georgetti (steakhouse)","Gibson's Bar & Steakhouse","Chicago Cut Steakhouse","Twin Anchors (ribs, since 1954)","Alinea (modern tasting menu)","Girl & the Goat","Frontera Grill / Topolobampo","Monteverde Restaurant & Pastificio","Smoque BBQ","Honey Butter Fried Chicken","Avec","Daisies","The Purple Pig","Shaw's Crab House","Green Door Tavern (est. 1921)","Café Ba-Ba-Reeba!"]},
+  {id:'nashville-hot-chicken',name:'Nashville Hot Chicken',emoji:'🌶️',sub:"The definitive guide — rank Nashville's finest",items:["Prince's Hot Chicken Shack (the original)","Hattie B's Hot Chicken","Bolton's Spicy Chicken & Fish","400 Degrees","Pepperfire Hot Chicken","Party Fowl","Red's Hot Chicken","Helen's Hot Chicken","Hella Hot Chicken","Gemstone Hot Chicken","Slim & Husky's (hot chicken pizza)","King Fish (hot fish & chicken)"]},
+  {id:'nashville-restaurants',name:'Nashville Restaurants',emoji:'🎸',sub:"Music City's best beyond hot chicken",items:['The Loveless Cafe',"Arnold's Country Kitchen","Monell's Dining & Catering","Martin's Bar-B-Que Joint","Jack's Bar-B-Que","Biscuit Love","Mas Tacos Por Favor","City House","The Row Kitchen & Pub","Josephine","Rolf and Daughters","Henrietta Red","Bastion","Puckett's Grocery & Restaurant","Pharmacy Burger Parlor & Beer Garden","Chauhan Ale & Masala House","Adele's","Etch","Oak Steakhouse Nashville","The Catbird Seat"]},
+  {id:'nyc-classics',name:'NYC Food Institutions',emoji:'🗽',sub:'23 legendary New York spots every foodie should try',items:["Katz's Delicatessen","Peter Luger Steak House","Grimaldi's Pizzeria","Di Fara Pizza","Joe's Pizza (West Village)","Lombardi's Pizza (est. 1905)","Totonno's Pizzeria","Russ & Daughters","Barney Greengrass","2nd Avenue Deli","Sylvia's Restaurant (Harlem)","Carbone","Rao's","Sardi's","Keens Steakhouse","The Halal Guys (cart, 53rd & 6th)","Junior's Cheesecake (Brooklyn)","Gray's Papaya","L&B Spumoni Gardens","John's of Bleecker Street (pizza)","Veselka (Ukrainian diner)","Shake Shack (original, Madison Sq Park)","Nom Wah Tea Parlor (Chinatown, est. 1920)"]}
 ];
 
 const TIERS = [
-  {id:"S",label:"S",sub:"legendary"},
-  {id:"A",label:"A",sub:"so good"},
-  {id:"B",label:"B",sub:"solid"},
-  {id:"C",label:"C",sub:"it's fine"},
-  {id:"D",label:"D",sub:"i'd pass"},
-  {id:"F",label:"F",sub:"never again"},
+  {id:'S',l:'S',s:'legendary'},
+  {id:'A',l:'A',s:'so good'},
+  {id:'B',l:'B',s:'solid'},
+  {id:'C',l:'C',s:"it's fine"},
+  {id:'D',l:'D',s:"i'd pass"},
+  {id:'F',l:'F',s:'never again'},
 ];
-const TIER_LABELS = {S:"Legendary",A:"So Good",B:"Solid Choice",C:"It's Fine",D:"I'd Pass",F:"Never Again"};
+const TLABELS = {S:'Legendary',A:'So Good',B:'Solid Choice',C:"It's Fine",D:"I'd Pass",F:'Never Again'};
 const COL = {
-  S:{bg:"var(--s-bg)",bd:"var(--s-bd)",tx:"var(--s-tx)"},
-  A:{bg:"var(--a-bg)",bd:"var(--a-bd)",tx:"var(--a-tx)"},
-  B:{bg:"var(--b-bg)",bd:"var(--b-bd)",tx:"var(--b-tx)"},
-  C:{bg:"var(--c-bg)",bd:"var(--c-bd)",tx:"var(--c-tx)"},
-  D:{bg:"var(--d-bg)",bd:"var(--d-bd)",tx:"var(--d-tx)"},
-  F:{bg:"var(--f-bg)",bd:"var(--f-bd)",tx:"var(--f-tx)"},
+  S:{bg:'var(--s-bg)',bd:'var(--s-bd)',tx:'var(--s-tx)'},
+  A:{bg:'var(--a-bg)',bd:'var(--a-bd)',tx:'var(--a-tx)'},
+  B:{bg:'var(--b-bg)',bd:'var(--b-bd)',tx:'var(--b-tx)'},
+  C:{bg:'var(--c-bg)',bd:'var(--c-bd)',tx:'var(--c-tx)'},
+  D:{bg:'var(--d-bg)',bd:'var(--d-bd)',tx:'var(--d-tx)'},
+  F:{bg:'var(--f-bg)',bd:'var(--f-bd)',tx:'var(--f-tx)'},
 };
 
-/* ─── LOCALSTORAGE ───────────────────────────────────────────────────── */
-const LS = {
-  get:(k,fb)=>{ try{const v=localStorage.getItem(k);return v?JSON.parse(v):fb}catch{return fb} },
-  set:(k,v)=>{ try{localStorage.setItem(k,JSON.stringify(v))}catch{} }
+/* ── STORAGE ─────────────────────────────────────────── */
+const S = {
+  get(k,fb){try{const v=localStorage.getItem(k);return v!=null?JSON.parse(v):fb}catch{return fb}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}
 };
 
-/* ─── STATE ──────────────────────────────────────────────────────────── */
-let state = {
-  view: 'library',          // library | rate | results | manage
-  listTab: 'rate',
-  activeId: null,           // active list id
-  myListIds: LS.get('tla_my_list_ids', []),
-  importedLists: LS.get('tla_imported_lists', {}), // id → list object (for non-builtins)
-};
+/* ── APP STATE ───────────────────────────────────────── */
+let myIds    = S.get('tla2_ids',[]);
+let imported = S.get('tla2_imp',{});
+let activeId = null;
+let listTab  = 'rate';
 
-function getList(id) {
-  return BUILTIN_PACKS.find(p=>p.id===id) || state.importedLists[id] || null;
-}
-function getAllItems(id) {
-  const list = getList(id); if(!list) return [];
-  const custom = LS.get('tla_custom_'+id, []);
-  return [...list.items, ...custom];
-}
-function getRatings(id) { return LS.get('tla_ratings_'+id, {S:[],A:[],B:[],C:[],D:[],F:[]}); }
-function saveRatings(id, r) { LS.set('tla_ratings_'+id, r); }
-function getCustomItems(id) { return LS.get('tla_custom_'+id, []); }
-function saveCustomItems(id, items) { LS.set('tla_custom_'+id, items); }
-function getSelected(id) { return LS.get('tla_sel_'+id, null); }
-function saveSelected(id, v) { LS.set('tla_sel_'+id, v); }
-
-function getRated(ratings) { return new Set(Object.values(ratings).flat()); }
-function getUnrated(id) {
-  const all = getAllItems(id), rated = getRated(getRatings(id));
-  return all.filter(f=>!rated.has(f));
-}
-function getTierOf(id, f) {
-  const r = getRatings(id);
-  return TIERS.find(t=>r[t.id].includes(f))?.id || null;
+function getList(id){ return PACKS.find(p=>p.id===id) || imported[id] || null; }
+function getItems(id){ const l=getList(id); return l?[...l.items,...S.get('tla2_cust_'+id,[])]:[]; }
+function getRatings(id){ return S.get('tla2_rat_'+id,{S:[],A:[],B:[],C:[],D:[],F:[]}); }
+function saveRatings(id,r){ S.set('tla2_rat_'+id,r); }
+function getCustom(id){ return S.get('tla2_cust_'+id,[]); }
+function saveCustom(id,c){ S.set('tla2_cust_'+id,c); }
+function getSel(id){ return S.get('tla2_sel_'+id,null); }
+function setSel(id,v){ S.set('tla2_sel_'+id,v); }
+function getRated(r){ return new Set(Object.values(r).flat()); }
+function getUnrated(id){ const all=getItems(id),rat=getRated(getRatings(id)); return all.filter(f=>!rat.has(f)); }
+function getTierOf(id,f){ return TIERS.find(t=>getRatings(id)[t.id].includes(f))?.id||null; }
+function ensureSel(id){
+  const u=getUnrated(id);
+  if(u.length && !u.includes(getSel(id))) setSel(id,u[0]);
 }
 
-/* ─── NAVIGATION ─────────────────────────────────────────────────────── */
-function goHome() {
-  state.activeId = null; state.view = 'library';
-  renderAll();
+/* ── NAVIGATION ─────────────────────────────────────── */
+function showLib(){
+  activeId=null;
+  document.getElementById('scr-list').classList.remove('on');
+  document.getElementById('scr-lib').classList.add('on');
+  renderLib();
 }
 
-function openList(id, tab) {
-  state.activeId = id; state.view = 'list';
-  state.listTab = tab || 'rate';
-  // auto-select first unrated if no selection saved
-  if(!getSelected(id)) {
-    const u = getUnrated(id);
-    if(u.length) saveSelected(id, u[0]);
-  }
-  renderAll();
+function showList(id,tab){
+  activeId=id; listTab=tab||'rate';
+  ensureSel(id);
+  document.getElementById('scr-lib').classList.remove('on');
+  document.getElementById('scr-list').classList.add('on');
+  const list=getList(id);
+  document.getElementById('list-title').textContent=(list?.emoji||'')+' '+(list?.name||'');
+  setTab(listTab);
 }
 
-function switchListTab(tab) {
-  state.listTab = tab; renderAll();
-}
-
-/* ─── LIBRARY ACTIONS ────────────────────────────────────────────────── */
-function addBuiltinList(id) {
-  if(!state.myListIds.includes(id)) {
-    state.myListIds.push(id);
-    LS.set('tla_my_list_ids', state.myListIds);
-  }
-  renderAll();
-}
-
-function removeList(id) {
-  const list = getList(id);
-  const name = list?.name || 'this list';
-  if(!confirm(`Remove "${name}" from your library? Ratings are saved and will come back if you re-add it.`)) return;
-  state.myListIds = state.myListIds.filter(x=>x!==id);
-  LS.set('tla_my_list_ids', state.myListIds);
-  renderAll();
-}
-
-function handleImport(e) {
-  const file = e.target.files[0]; if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ev => {
-    try {
-      const data = JSON.parse(ev.target.result);
-      if(!data.items || !Array.isArray(data.items) || !data.items.length)
-        return showToast('Invalid list file — needs an "items" array');
-      const id = data.id || 'imported_' + Date.now();
-      const pack = {
-        id, name: data.name||'Imported List',
-        emoji: data.emoji||'📋',
-        subtitle: data.subtitle||data.items.length+' items',
-        items: data.items.map(i=>typeof i==='string'?i:(i.name||String(i))).filter(Boolean)
-      };
-      state.importedLists[id] = pack;
-      LS.set('tla_imported_lists', state.importedLists);
-      if(!state.myListIds.includes(id)) {
-        state.myListIds.push(id);
-        LS.set('tla_my_list_ids', state.myListIds);
-      }
-      showToast('✓ "'+pack.name+'" added to your library');
-      renderAll();
-    } catch { showToast('Could not read that file — check it\'s valid JSON'); }
-  };
-  reader.readAsText(file);
-  e.target.value = '';
-}
-
-/* ─── RATING ACTIONS ─────────────────────────────────────────────────── */
-function assign(tierId) {
-  const id = state.activeId; if(!id) return;
-  const sel = getSelected(id); if(!sel) return;
-  const r = getRatings(id);
-  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==sel); });
-  r[tierId].push(sel);
-  saveRatings(id, r);
-  const remaining = getUnrated(id);
-  saveSelected(id, remaining[0]||null);
-  renderAll();
-}
-
-function reRate(f) {
-  const id = state.activeId; if(!id) return;
-  const r = getRatings(id);
-  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==f); });
-  saveRatings(id, r); saveSelected(id, f);
-  state.view='list'; state.listTab='rate';
-  renderAll();
-}
-
-function unrateItem(e, f) {
-  e.stopPropagation();
-  const id = state.activeId; if(!id) return;
-  const r = getRatings(id);
-  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==f); });
-  saveRatings(id, r);
-  // If nothing is selected, pick this item next
-  if(!getSelected(id)) saveSelected(id, f);
-  state.view='list'; state.listTab='rate';
-  renderAll();
-}
-
-function selectItem(f) {
-  saveSelected(state.activeId, f); renderAll();
-}
-
-function resetRatings() {
-  if(!confirm('Clear all ratings for this list? Your items stay the same.')) return;
-  const id = state.activeId; if(!id) return;
-  saveRatings(id, {S:[],A:[],B:[],C:[],D:[],F:[]});
-  // Use getAllItems — ratings just cleared so all items are now unrated
-  const all = getAllItems(id);
-  saveSelected(id, all[0]||null);
-  state.view = 'list';
-  state.listTab = 'rate';
-  renderAll();
-}
-
-function clearAllData() {
-  if(!confirm('Delete ALL ratings and imported lists? Built-in lists stay but all ratings are gone. Cannot be undone.')) return;
-  try { localStorage.clear(); } catch(e) {}
-  state.myListIds = [];
-  state.importedLists = {};
-  state.activeId = null;
-  state.view = 'library';
-  state.listTab = 'rate';
-  renderAll();
-  showToast('All data cleared — fresh start!');
-}
-
-/* ─── MANAGE ACTIONS ─────────────────────────────────────────────────── */
-function addItem() {
-  const id = state.activeId; if(!id) return;
-  const input = document.getElementById('add-input');
-  const errEl = document.getElementById('add-err');
-  const name = input.value.trim(); errEl.textContent='';
-  if(!name){errEl.textContent='Please enter a name.';return}
-  const all = getAllItems(id);
-  if(all.some(f=>f.toLowerCase()===name.toLowerCase())){
-    errEl.textContent=`"${name}" is already in the list.`; return;
-  }
-  const custom = getCustomItems(id);
-  custom.push(name); saveCustomItems(id, custom);
-  if(!getSelected(id)) saveSelected(id, name);
-  input.value=''; renderAll();
-}
-
-function removeItem(f) {
-  const id = state.activeId; if(!id) return;
-  const tierId = getTierOf(id, f);
-  if(tierId && !confirm(`"${f}" is rated ${tierId}. Remove it anyway?`)) return;
-  const custom = getCustomItems(id).filter(x=>x!==f);
-  saveCustomItems(id, custom);
-  const r = getRatings(id);
-  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==f); });
-  saveRatings(id, r);
-  if(getSelected(id)===f) {
-    const u = getUnrated(id).filter(x=>x!==f);
-    saveSelected(id, u[0]||null);
-  }
-  renderAll();
-}
-
-/* ─── RENDER ─────────────────────────────────────────────────────────── */
-function renderAll() {
-  // Self-heal: fix broken state before rendering
-  if(state.view === 'list' && !state.activeId) { state.view = 'library'; }
-  if(state.activeId && !getList(state.activeId)) { state.activeId = null; state.view = 'library'; }
-  if(state.view === 'list' && state.activeId) {
-    const sel = getSelected(state.activeId);
-    const unrated = getUnrated(state.activeId);
-    // If nothing selected but there are unrated items, pick the first one
-    if(!sel && unrated.length > 0) saveSelected(state.activeId, unrated[0]);
-  }
-
-  // Show/hide header sections
-  document.getElementById('lib-header').style.display   = state.view==='library'?'block':'none';
-  const lh = document.getElementById('list-header');
-  if(state.view!=='library' && state.activeId) {
-    lh.classList.add('active');
-    const list = getList(state.activeId);
-    document.getElementById('list-header-name').textContent = (list?.emoji||'')+'  '+(list?.name||'');
-    ['rate','results','manage'].forEach(t=>{
-      document.getElementById('ltab-'+t).classList.toggle('active', t===state.listTab);
-    });
-  } else { lh.classList.remove('active'); }
-
-  // Progress bar
-  const pbw = document.getElementById('progress-bar-wrap');
-  if(state.view!=='library' && state.activeId) {
-    pbw.classList.add('active');
-    const id = state.activeId;
-    const all = getAllItems(id), rated = getRated(getRatings(id)).size;
-    const pct = all.length?Math.round(rated/all.length*100):0;
-    document.getElementById('pfill').style.width=pct+'%';
-    document.getElementById('plabel').textContent=rated+' / '+all.length;
-  } else { pbw.classList.remove('active'); }
-
-  // Views
-  ['library','rate','results','manage'].forEach(v=>{
-    document.getElementById('view-'+v).classList.toggle('active', false);
+function setTab(tab){
+  listTab=tab;
+  ['rate','results','manage'].forEach(t=>{
+    document.getElementById('ltab-'+t).classList.toggle('on',t===tab);
+    document.getElementById('tab-'+t).style.display=t===tab?'':'none';
   });
-  if(state.view==='library') {
-    document.getElementById('view-library').classList.add('active');
-    renderLibrary();
-  } else if(state.view==='list') {
-    document.getElementById('view-'+state.listTab).classList.add('active');
-    if(state.listTab==='rate') renderRate();
-    else if(state.listTab==='results') renderResults();
-    else renderManage();
-  }
+  if(tab==='rate') renderRate();
+  else if(tab==='results') renderResults();
+  else renderManage();
+  updateProg();
 }
 
-/* ── Library ── */
-function renderLibrary() {
-  // My lists
-  const myWrap = document.getElementById('my-lists-wrap');
-  if(state.myListIds.length===0) {
-    myWrap.innerHTML=`<div style="margin-bottom:28px">
-      <div class="lib-section-title">My lists</div>
-      <div class="empty-lib">
-        <p>No lists yet — add one from the packs below or import your own .json file.</p>
-      </div></div>`;
+function updateProg(){
+  if(!activeId) return;
+  const all=getItems(activeId), rat=getRated(getRatings(activeId)).size;
+  const pct=all.length?Math.round(rat/all.length*100):0;
+  document.getElementById('prog-fill').style.width=pct+'%';
+  document.getElementById('prog-lbl').textContent=rat+' / '+all.length;
+}
+
+/* ── LIBRARY RENDER ──────────────────────────────────── */
+function renderLib(){
+  const el=document.getElementById('my-lists');
+  if(!myIds.length){
+    el.innerHTML=`<div style="margin-bottom:24px"><div class="sec-head">My lists</div><div class="empty-state"><p>No lists yet — add a pack below or import your own .json file.</p></div></div>`;
   } else {
-    myWrap.innerHTML=`<div style="margin-bottom:28px">
-      <div class="lib-section-title">My lists</div>
-      <div class="pack-grid">${state.myListIds.map(id=>myListCard(id)).join('')}</div>
-    </div>`;
+    el.innerHTML=`<div style="margin-bottom:24px"><div class="sec-head">My lists (${myIds.length})</div><div class="pack-grid">${myIds.map(listCard).join('')}</div></div>`;
   }
-  // Built-in packs (not yet added)
-  const notAdded = BUILTIN_PACKS.filter(p=>!state.myListIds.includes(p.id));
-  const grid = document.getElementById('builtin-grid');
-  if(notAdded.length===0) {
-    grid.innerHTML='<p style="font-size:13px;color:var(--text3)">All available packs are in your library!</p>';
-  } else {
-    grid.innerHTML = notAdded.map(p=>`
-      <div class="pack-card">
-        <div class="pack-top">
-          <div class="pack-emoji">${p.emoji}</div>
-          <div class="pack-info">
-            <div class="pack-name">${p.name}</div>
-            <div class="pack-sub">${p.subtitle}</div>
-          </div>
-        </div>
-        <div class="pack-actions">
-          <button class="pack-btn add-btn-lib" onclick="addBuiltinList('${p.id}')">+ Add to my lists</button>
-        </div>
+  const notAdded=PACKS.filter(p=>!myIds.includes(p.id));
+  const pg=document.getElementById('pack-grid');
+  pg.innerHTML=notAdded.length===0
+    ?'<p style="font-size:13px;color:var(--tx3)">All built-in packs are in your library!</p>'
+    :notAdded.map(p=>`<div class="card">
+        <div class="card-top"><div class="card-emoji">${p.emoji}</div><div><div class="card-name">${p.name}</div><div class="card-sub">${p.sub}</div></div></div>
+        <div class="card-btns"><button class="cbtn" onclick="addPack('${p.id}')">+ Add to my lists</button></div>
       </div>`).join('');
-  }
 }
 
-function myListCard(id) {
-  const list = getList(id); if(!list) return '';
-  const all = getAllItems(id), ratings = getRatings(id), rated = getRated(ratings).size;
-  const pct = all.length?Math.round(rated/all.length*100):0;
-  return `<div class="pack-card added">
-    <div class="pack-top">
-      <div class="pack-emoji">${list.emoji||'📋'}</div>
-      <div class="pack-info">
-        <div class="pack-name">${list.name}</div>
-        <div class="pack-sub">${list.subtitle||all.length+' items'}</div>
-      </div>
-    </div>
-    <div class="pack-progress visible">
-      <div class="pack-ptrack"><div class="pack-pfill" style="width:${pct}%"></div></div>
-      <div class="pack-ptext">${rated} / ${all.length} rated${pct===100?' · Complete! 🎉':''}</div>
-    </div>
-    <div class="pack-actions">
-      <button class="pack-btn primary" onclick="openList('${id}','rate')">Rate →</button>
-      <button class="pack-btn" onclick="openList('${id}','results')">Results</button>
-      <button class="pack-btn danger" onclick="removeList('${id}')">Remove</button>
+function listCard(id){
+  const l=getList(id); if(!l) return '';
+  const all=getItems(id),r=getRatings(id),rat=getRated(r).size,pct=all.length?Math.round(rat/all.length*100):0;
+  return `<div class="card">
+    <div class="card-top"><div class="card-emoji">${l.emoji||'📋'}</div><div><div class="card-name">${l.name}</div><div class="card-sub">${l.sub||all.length+' items'}</div></div></div>
+    <div><div class="card-prog-track"><div class="card-prog-fill" style="width:${pct}%"></div></div><div class="card-prog-lbl">${rat} / ${all.length} rated${pct===100?' · Complete! 🎉':''}</div></div>
+    <div class="card-btns">
+      <button class="cbtn p" onclick="showList('${id}','rate')">Rate →</button>
+      <button class="cbtn" onclick="showList('${id}','results')">Results</button>
+      <button class="cbtn d" onclick="removePack('${id}')">Remove</button>
     </div>
   </div>`;
 }
 
-/* ── Rate ── */
-function renderRate() {
-  const id = state.activeId; if(!id) return;
-  const ratings = getRatings(id), sel = getSelected(id);
-  const custom = new Set(getCustomItems(id));
-  const hasSelected = !!sel;
+/* ── LIBRARY ACTIONS ─────────────────────────────────── */
+function addPack(id){
+  if(!myIds.includes(id)){ myIds.push(id); S.set('tla2_ids',myIds); }
+  renderLib();
+}
 
-  document.getElementById('tier-rows').innerHTML = TIERS.map(tier=>{
-    const c=COL[tier.id];
-    const chips=ratings[tier.id].map(f=>
-      `<span class="rchip" style="background:${c.bg};border-color:${c.bd};color:${c.tx}">
-        <span class="rchip-label" onclick="reRate(${J(f)})" title="Tap to move back to unrated">${f}</span>
-        <button class="rchip-x" onclick="unrateItem(event,${J(f)})" title="Remove rating">×</button>
-      </span>`
-    ).join('');
+function removePack(id){
+  const l=getList(id);
+  if(!confirm('Remove "'+( l?.name||'this list')+'" from your library?')) return;
+  myIds=myIds.filter(x=>x!==id); S.set('tla2_ids',myIds); renderLib();
+}
+
+/* ── RATE RENDER ─────────────────────────────────────── */
+function renderRate(){
+  const id=activeId; if(!id) return;
+  ensureSel(id);
+  const rat=getRatings(id), sel=getSel(id), cust=new Set(getCustom(id));
+
+  // Tier rows
+  document.getElementById('tier-rows').innerHTML=TIERS.map(t=>{
+    const c=COL[t.id];
+    const chips=rat[t.id].map(f=>`<span class="rchip" style="background:${c.bg};border-color:${c.bd};color:${c.tx}"><span class="rchip-name" data-rerate="${esc(f)}" title="Re-rate">
+${f}</span><button class="rchip-del" data-unrate="${esc(f)}" title="Remove rating">×</button></span>`).join('');
     return `<div class="tier-row">
-      <button class="tbtn" onclick="assign('${tier.id}')" ${!hasSelected?'disabled':''}
-        style="background:${c.bg};border-color:${c.bd}">
-        <span class="tletter" style="color:${c.tx}">${tier.label}</span>
-        <span class="tsub" style="color:${c.tx}">${tier.sub}</span>
+      <button class="tier-btn" data-assign="${t.id}" ${!sel?'disabled':''} style="background:${c.bg};border-color:${c.bd}">
+        <span class="tletter" style="color:${c.tx}">${t.l}</span>
+        <span class="tsub" style="color:${c.tx}">${t.s}</span>
       </button>
-      <div class="tdrop">${chips}</div>
+      <div class="tier-drop">${chips}</div>
     </div>`;
   }).join('');
 
-  const nowEl = document.getElementById('now-wrap');
-  if(sel) {
-    const isCust=custom.has(sel);
-    const badge=isCust?`<span style="font-size:9px;font-weight:600;padding:2px 6px;background:var(--b-bg);color:var(--b-tx);border-radius:4px;margin-left:6px;text-transform:uppercase">custom</span>`:'';
-    nowEl.innerHTML=`<div class="now-rating">
-      <span class="now-lbl">Now rating</span>
-      <span class="now-name">${sel}${badge}</span>
-      <span class="now-hint">← tap a tier</span>
-    </div>`;
+  // Now rating
+  const nowEl=document.getElementById('now-box');
+  if(sel){
+    const badge=cust.has(sel)?`<span style="font-size:9px;font-weight:600;padding:2px 5px;background:var(--b-bg);color:var(--b-tx);border-radius:4px;margin-left:6px">custom</span>`:'';
+    nowEl.innerHTML=`<div class="now-box"><span class="now-lbl">Now rating</span><span class="now-name">${sel}${badge}</span><span class="now-hint">← tap a tier</span></div>`;
   } else { nowEl.innerHTML=''; }
 
-  const poolEl = document.getElementById('pool-wrap');
-  const unrated = getUnrated(id);
-  if(!unrated.length) {
-    poolEl.innerHTML=`<div class="done-banner">
-      <p>🎉 All ${getAllItems(id).length} items rated!</p>
-      <button class="btn primary" onclick="switchListTab('results')">See my full tier list →</button>
-    </div>`;
+  // Pool
+  const poolEl=document.getElementById('pool');
+  const unrated=getUnrated(id);
+  if(!unrated.length){
+    poolEl.innerHTML=`<div class="done-box"><p>🎉 All ${getItems(id).length} items rated!</p><button class="btn p" data-tab="results">See my full tier list →</button></div>`;
     return;
   }
-  const chips=unrated.map(f=>{
-    const isSel=f===sel, isCust=custom.has(f);
-    return `<button class="pchip${isSel?' sel':isCust?' custom':''}" onclick="selectItem(${J(f)})">${f}${isCust&&!isSel?' ✦':''}</button>`;
+  const pchips=unrated.map(f=>{
+    const isSel=f===sel, isCust=cust.has(f);
+    return `<button class="pchip${isSel?' sel':isCust?' cust':''}" data-sel="${esc(f)}">${f}${isCust&&!isSel?' ✦':''}</button>`;
   }).join('');
-  const rated=getRated(ratings).size;
-  poolEl.innerHTML=`<div class="pool-lbl">Unrated (${unrated.length} left) — select an item, then tap a tier above</div>
-    <div class="pool">${chips}</div>
-    ${rated>0?`<div class="btn-row"><button class="btn" onclick="switchListTab('results')">Preview results →</button></div>`:''}`;
+  poolEl.innerHTML=`<div class="pool-lbl">Unrated (${unrated.length} left) — select an item, then tap a tier</div>
+    <div class="pool">${pchips}</div>
+    ${getRated(rat).size>0?'<div class="btn-row"><button class="btn" data-tab="results">Preview results →</button></div>':''}`;
 }
 
-/* ── Results ── */
-function renderResults() {
-  const id=state.activeId; if(!id) return;
-  const ratings=getRatings(id), unrated=getUnrated(id);
-  const active=TIERS.filter(t=>ratings[t.id].length>0);
+function esc(s){ return s.replace(/"/g,'&quot;'); }
 
-  document.getElementById('res-rows').innerHTML = active.length===0
-    ?`<p style="color:var(--text2);font-size:14px;padding:18px 0">No ratings yet — head to the Rate tab!</p>`
-    :active.map(tier=>{
-      const c=COL[tier.id];
-      const chips=ratings[tier.id].map(f=>`<span class="res-chip" style="background:${c.bg};color:${c.tx}">${f}</span>`).join('');
+/* ── RESULTS RENDER ──────────────────────────────────── */
+function renderResults(){
+  const id=activeId; if(!id) return;
+  const rat=getRatings(id), unrated=getUnrated(id);
+  const active=TIERS.filter(t=>rat[t.id].length>0);
+  document.getElementById('res-rows').innerHTML=active.length===0
+    ?'<p style="color:var(--tx2);font-size:14px;padding:16px 0">No ratings yet — head to the Rate tab!</p>'
+    :active.map(t=>{
+      const c=COL[t.id];
       return `<div class="res-row">
-        <div class="res-tier" style="background:${c.bg}">
-          <span class="res-letter" style="color:${c.tx}">${tier.label}</span>
-          <span class="res-sub" style="color:${c.tx}">${tier.sub}</span>
-        </div>
-        <div class="res-chips">${chips}</div>
+        <div class="res-tier" style="background:${c.bg}"><span class="res-letter" style="color:${c.tx}">${t.l}</span><span class="res-sub" style="color:${c.tx}">${t.s}</span></div>
+        <div class="res-chips">${rat[t.id].map(f=>`<span class="res-chip" style="background:${c.bg};color:${c.tx}">${f}</span>`).join('')}</div>
       </div>`;
     }).join('');
-
-  document.getElementById('res-unrated').innerHTML = unrated.length
+  document.getElementById('res-unrated').innerHTML=unrated.length
     ?`<div class="unrated-note">⚠ ${unrated.length} unrated: ${unrated.join(', ')}</div>`:'';
-
-  const lines=['🏆 '+getList(id)?.name+' — My Tier List',''];
-  TIERS.forEach(t=>{
-    if(ratings[t.id].length){
-      lines.push(`[ ${t.label} — ${TIER_LABELS[t.id]} ]`);
-      ratings[t.id].forEach(f=>lines.push('  • '+f));
-      lines.push('');
-    }
-  });
+  const lines=[`🏆 ${getList(id)?.name} — My Tier List`,''];
+  TIERS.forEach(t=>{ if(rat[t.id].length){ lines.push(`[ ${t.l} — ${TLABELS[t.id]} ]`); rat[t.id].forEach(f=>lines.push('  • '+f)); lines.push(''); }});
   if(unrated.length) lines.push('Unrated: '+unrated.join(', '));
-  document.getElementById('save-text').value=lines.join('\n');
+  document.getElementById('save-txt').value=lines.join('\n');
 }
 
-/* ── Manage ── */
-function renderManage() {
-  const id=state.activeId; if(!id) return;
-  const list=getList(id), customItems=getCustomItems(id), customSet=new Set(customItems);
-  const defaults=list?.items||[], ratings=getRatings(id);
-
+/* ── MANAGE RENDER ───────────────────────────────────── */
+function renderManage(){
+  const id=activeId; if(!id) return;
+  const all=getItems(id), cust=getCustom(id), custSet=new Set(cust), rat=getRatings(id);
   const row=f=>{
-    const tierId=getTierOf(id,f), isCust=customSet.has(f);
-    const badge=isCust?'<span class="pill pill-custom">custom</span>':'';
-    const rated=tierId?`<span class="pill pill-rated">rated ${tierId}</span>`:'';
+    const tid=getTierOf(id,f), isCust=custSet.has(f);
     return `<div class="fl-item">
-      <span class="fl-name">${f}</span>${badge}${rated}
-      <button class="rm-btn" onclick="removeItem(${J(f)})" title="Remove">×</button>
+      <span class="fl-name">${f}</span>
+      ${isCust?'<span class="pill pill-c">custom</span>':''}
+      ${tid?`<span class="pill pill-r">rated ${tid}</span>`:''}
+      <button class="rm-btn" data-rm="${esc(f)}">×</button>
     </div>`;
   };
-
+  const customs=all.filter(f=>custSet.has(f)), defs=all.filter(f=>!custSet.has(f));
   let html='';
-  if(customItems.length){
-    html+=`<div class="sec-lbl">Custom (${customItems.length})</div>`;
-    html+=customItems.map(row).join('');
-    html+='<div class="divider"></div>';
-  }
-  html+=`<div class="sec-lbl">From pack (${defaults.length})</div>`;
-  html+=defaults.map(row).join('');
-  document.getElementById('manage-list').innerHTML=`<div class="flavor-list">${html}</div>`;
+  if(customs.length){ html+=`<div class="sec-lbl">Custom (${customs.length})</div>`+customs.map(row).join('')+'<div class="divider"></div>'; }
+  html+=`<div class="sec-lbl">From pack (${defs.length})</div>`+defs.map(row).join('');
+  document.getElementById('fl-list').innerHTML=`<div class="fl-list">${html}</div>`;
 }
 
-/* ── Helpers ── */
-function J(v){ return JSON.stringify(v); }
-
-function copyText() {
-  const ta=document.getElementById('save-text'); ta.select(); document.execCommand('copy');
-  const btn=event.currentTarget, orig=btn.textContent;
-  btn.textContent='✓ Copied!'; setTimeout(()=>btn.textContent=orig,1800);
+/* ── RATING ACTIONS ──────────────────────────────────── */
+function assign(tierId){
+  const id=activeId, sel=getSel(id); if(!sel) return;
+  const r=getRatings(id);
+  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==sel); });
+  r[tierId].push(sel);
+  saveRatings(id,r);
+  const u=getUnrated(id);
+  setSel(id,u[0]||null);
+  renderRate(); updateProg();
 }
 
-let toastTimer;
-function showToast(msg) {
+function reRate(f){
+  const id=activeId, r=getRatings(id);
+  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==f); });
+  saveRatings(id,r); setSel(id,f);
+  setTab('rate');
+}
+
+function unRate(f){
+  const id=activeId, r=getRatings(id);
+  TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==f); });
+  saveRatings(id,r);
+  if(!getSel(id)) setSel(id,f);
+  renderRate(); updateProg();
+}
+
+function selItem(f){ setSel(activeId,f); renderRate(); }
+
+function resetRatings(){
+  if(!confirm('Clear all ratings for this list? Items stay the same.')) return;
+  const id=activeId;
+  saveRatings(id,{S:[],A:[],B:[],C:[],D:[],F:[]});
+  setSel(id,getItems(id)[0]||null);
+  setTab('rate');
+}
+
+function addItem(){
+  const id=activeId, inp=document.getElementById('add-inp'), err=document.getElementById('add-err');
+  const name=inp.value.trim(); err.textContent='';
+  if(!name){ err.textContent='Please enter a name.'; return; }
+  if(getItems(id).some(f=>f.toLowerCase()===name.toLowerCase())){ err.textContent=`"${name}" is already in the list.`; return; }
+  const c=getCustom(id); c.push(name); saveCustom(id,c);
+  if(!getSel(id)) setSel(id,name);
+  inp.value=''; renderManage(); updateProg();
+}
+
+function removeItem(f){
+  const id=activeId, tid=getTierOf(id,f);
+  if(tid&&!confirm(`"${f}" is rated ${tid}. Remove it anyway?`)) return;
+  const c=getCustom(id).filter(x=>x!==f); saveCustom(id,c);
+  const r=getRatings(id); TIERS.forEach(t=>{ r[t.id]=r[t.id].filter(x=>x!==f); }); saveRatings(id,r);
+  if(getSel(id)===f){ const u=getUnrated(id).filter(x=>x!==f); setSel(id,u[0]||null); }
+  renderManage(); updateProg();
+}
+
+function clearAll(){
+  if(!confirm('Delete ALL ratings and imported lists? Cannot be undone.')) return;
+  try{ localStorage.clear(); }catch(e){}
+  myIds=[]; imported={}; activeId=null;
+  toast('All data cleared — fresh start!');
+  renderLib();
+}
+
+/* ── IMPORT ──────────────────────────────────────────── */
+document.getElementById('file-input').addEventListener('change',function(e){
+  const file=e.target.files[0]; if(!file) return;
+  const reader=new FileReader();
+  reader.onload=function(ev){
+    try{
+      const d=JSON.parse(ev.target.result);
+      if(!d.items||!Array.isArray(d.items)||!d.items.length) return toast('Invalid file — needs an "items" array');
+      const id=d.id||'imp_'+Date.now();
+      const pack={id,name:d.name||'Imported List',emoji:d.emoji||'📋',sub:d.subtitle||d.items.length+' items',items:d.items.map(i=>typeof i==='string'?i:(i.name||String(i))).filter(Boolean)};
+      imported[id]=pack; S.set('tla2_imp',imported);
+      if(!myIds.includes(id)){ myIds.push(id); S.set('tla2_ids',myIds); }
+      toast('✓ "'+pack.name+'" added to your library');
+      renderLib();
+    }catch(err){ toast('Could not read that file — check it\'s valid JSON'); }
+  };
+  reader.readAsText(file);
+  e.target.value='';
+});
+
+/* ── EVENT DELEGATION ────────────────────────────────── */
+// All clicks in the list screen go through ONE handler — no inline onclick
+document.getElementById('scr-list').addEventListener('click', function(e) {
+  const t = e.target;
+
+  // Tab buttons
+  const ltab = t.closest('[data-tab]');
+  if (ltab) { setTab(ltab.dataset.tab); return; }
+
+  // Tier assign buttons
+  const tbtn = t.closest('[data-assign]');
+  if (tbtn && !tbtn.disabled) { assign(tbtn.dataset.assign); return; }
+
+  // Re-rate chip name
+  if (t.dataset.rerate !== undefined) { reRate(t.dataset.rerate); return; }
+
+  // Unrate chip × button
+  if (t.dataset.unrate !== undefined) { unRate(t.dataset.unrate); return; }
+
+  // Pool chip select
+  if (t.dataset.sel !== undefined) { selItem(t.dataset.sel); return; }
+
+  // Remove item in manage
+  if (t.dataset.rm !== undefined) { removeItem(t.dataset.rm); return; }
+});
+
+document.getElementById('back-btn').addEventListener('click', showLib);
+document.getElementById('reset-btn').addEventListener('click', resetRatings);
+document.getElementById('clear-btn').addEventListener('click', clearAll);
+document.getElementById('copy-btn').addEventListener('click', function(){
+  const ta=document.getElementById('save-txt'); ta.select(); document.execCommand('copy');
+  const orig=this.textContent; this.textContent='✓ Copied!'; setTimeout(()=>this.textContent=orig,1800);
+});
+document.getElementById('add-btn').addEventListener('click', addItem);
+document.getElementById('add-inp').addEventListener('keydown', function(e){ if(e.key==='Enter') addItem(); });
+
+// Library inline onclick wrappers (these are safe — library is static HTML buttons)
+function addPack(id){
+  if(!myIds.includes(id)){ myIds.push(id); S.set('tla2_ids',myIds); }
+  renderLib();
+}
+function removePack(id){
+  const l=getList(id);
+  if(!confirm('Remove "'+( l?.name||'this list')+'" from your library?')) return;
+  myIds=myIds.filter(x=>x!==id); S.set('tla2_ids',myIds); renderLib();
+}
+
+/* ── TOAST ───────────────────────────────────────────── */
+let toastT;
+function toast(msg){
   const el=document.getElementById('toast'); el.textContent=msg;
-  el.classList.add('show'); clearTimeout(toastTimer);
-  toastTimer=setTimeout(()=>el.classList.remove('show'),3200);
+  el.classList.add('on'); clearTimeout(toastT);
+  toastT=setTimeout(()=>el.classList.remove('on'),3200);
 }
 
-/* ─── INIT ───────────────────────────────────────────────────────────── */
-renderAll();
+/* ── INIT ────────────────────────────────────────────── */
+renderLib();
 </script>
 
 <script>
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('./sw.js')
-      .then(() => console.log('Tier List: offline ready'))
-      .catch(e => console.warn('SW registration failed:', e));
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('./sw.js');
   });
 }
 </script>
