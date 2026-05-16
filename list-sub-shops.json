@@ -1,0 +1,25 @@
+{
+  "name": "Sub Shops",
+  "emoji": "\ud83e\udd56",
+  "subtitle": "Rate every major sandwich chain",
+  "items": [
+    "Subway",
+    "Jersey Mike's",
+    "Firehouse Subs",
+    "Jimmy John's",
+    "Potbelly",
+    "Quiznos",
+    "Which Wich",
+    "Capriotti's",
+    "Jason's Deli",
+    "McAlister's Deli",
+    "Penn Station East Coast Subs",
+    "Charley's Grilled Subs",
+    "Port of Subs",
+    "Blimpie",
+    "Schlotzsky's",
+    "Larry's Giant Subs",
+    "Mr. Goodcents",
+    "Wawa Hoagies"
+  ]
+}

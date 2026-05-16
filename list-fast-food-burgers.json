@@ -1,0 +1,32 @@
+{
+  "name": "Fast Food Burgers",
+  "emoji": "\ud83c\udf54",
+  "subtitle": "25 iconic burgers \u2014 rank the legends",
+  "items": [
+    "Big Mac (McDonald's)",
+    "Double Big Mac (McDonald's)",
+    "Quarter Pounder with Cheese (McDonald's)",
+    "McDouble (McDonald's)",
+    "Whopper (Burger King)",
+    "Double Whopper (Burger King)",
+    "Baconator (Wendy's)",
+    "Dave's Single (Wendy's)",
+    "Double-Double (In-N-Out)",
+    "Double-Double Animal Style (In-N-Out)",
+    "ShackBurger (Shake Shack)",
+    "SmokeShack (Shake Shack)",
+    "ButterBurger (Culver's)",
+    "Classic Smash (Smashburger)",
+    "Original Burger (Five Guys)",
+    "Original Double (Freddy's)",
+    "Steakburger Double (Steak 'n Shake)",
+    "Sourdough Jack (Jack in the Box)",
+    "Jumbo Jack (Jack in the Box)",
+    "Famous Star (Carl's Jr. / Hardee's)",
+    "Thickburger (Carl's Jr. / Hardee's)",
+    "Big Buford (Rally's / Checker's)",
+    "Patty Melt (Whataburger)",
+    "Whataburger Classic",
+    "Big Hot Mess (Sonic)"
+  ]
+}

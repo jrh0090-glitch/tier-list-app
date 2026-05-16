@@ -1,0 +1,30 @@
+{
+  "name": "NYC Food Institutions",
+  "emoji": "\ud83d\uddfd",
+  "subtitle": "23 legendary New York spots every foodie should try",
+  "items": [
+    "Katz's Delicatessen",
+    "Peter Luger Steak House",
+    "Grimaldi's Pizzeria",
+    "Di Fara Pizza",
+    "Joe's Pizza (West Village)",
+    "Lombardi's Pizza (est. 1905)",
+    "Totonno's Pizzeria",
+    "Russ & Daughters",
+    "Barney Greengrass",
+    "2nd Avenue Deli",
+    "Sylvia's Restaurant (Harlem)",
+    "Carbone",
+    "Rao's",
+    "Sardi's",
+    "Keens Steakhouse",
+    "The Halal Guys (cart, 53rd & 6th)",
+    "Junior's Cheesecake (Brooklyn)",
+    "Gray's Papaya",
+    "L&B Spumoni Gardens",
+    "John's of Bleecker Street (pizza)",
+    "Veselka (Ukrainian diner)",
+    "Shake Shack (original, Madison Sq Park)",
+    "Nom Wah Tea Parlor (Chinatown, est. 1920)"
+  ]
+}
