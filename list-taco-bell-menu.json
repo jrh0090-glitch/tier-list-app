@@ -1,0 +1,32 @@
+{
+  "name": "Taco Bell Menu",
+  "emoji": "\ud83d\udd14",
+  "subtitle": "Rate the entire Taco Bell menu",
+  "items": [
+    "Crunchy Taco",
+    "Soft Taco",
+    "Doritos Locos Taco (Nacho Cheese)",
+    "Doritos Locos Taco (Cool Ranch)",
+    "Crunchwrap Supreme",
+    "Chalupa Supreme",
+    "Mexican Pizza",
+    "Nachos BellGrande",
+    "Cheesy Gordita Crunch",
+    "Beefy 5-Layer Burrito",
+    "Bean Burrito",
+    "Chicken Quesadilla",
+    "Power Bowl",
+    "Cinnabon Delights",
+    "Cantina Chicken Burrito",
+    "Quesarito",
+    "Spicy Potato Soft Taco",
+    "Double Decker Taco",
+    "Tostada",
+    "Nachos Supreme",
+    "Loaded Nacho Taco",
+    "Cheesy Bean and Rice Burrito",
+    "Grilled Cheese Burrito",
+    "Breakfast Crunchwrap",
+    "Breakfast Burrito"
+  ]
+}
