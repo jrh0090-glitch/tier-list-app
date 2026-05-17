@@ -1,4 +1,4 @@
-const CACHE = 'tier-list-v7';
+const CACHE = 'tier-list-v8';
 
 const CORE = [
   './',
