@@ -1,0 +1,32 @@
+{
+  "name": "Pop-Tart Flavors",
+  "emoji": "\ud83d\udfe5",
+  "subtitle": "Frosted, unfrosted, and unhinged \u2014 ranked",
+  "items": [
+    "Strawberry (Frosted)",
+    "Brown Sugar Cinnamon",
+    "Blueberry",
+    "Hot Fudge Sundae",
+    "S'mores",
+    "Wildlicious Wild! Berry",
+    "Cherry",
+    "Watermelon",
+    "Apple Cinnamon",
+    "Cinnamon Roll",
+    "Red Velvet",
+    "Frosted Chocolate Fudge",
+    "Cotton Candy",
+    "Confetti Cake",
+    "Birthday Cake",
+    "Frosted Grape",
+    "Strawberry Milkshake",
+    "Pumpkin Pie (seasonal)",
+    "Gingerbread (seasonal)",
+    "Frosted Cookies & Creme",
+    "A&W Root Beer",
+    "Mtn Dew (yes, this exists)",
+    "Dunkin' Mocha Latte",
+    "Brown Sugar Cinnamon (unfrosted)",
+    "Strawberry (unfrosted)"
+  ]
+}

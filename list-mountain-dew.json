@@ -1,0 +1,28 @@
+{
+  "name": "Mountain Dew Flavors",
+  "emoji": "\ud83d\udc9a",
+  "subtitle": "Original to Baja Blast \u2014 every flavor ranked",
+  "items": [
+    "Original (Citrus)",
+    "Diet / Zero Sugar",
+    "Code Red (cherry)",
+    "Voltage (raspberry + ginseng)",
+    "LiveWire (orange)",
+    "Major Melon (watermelon)",
+    "Baja Blast (tropical lime \u2014 Taco Bell)",
+    "Baja Blast Zero",
+    "Baja Gold (pineapple coconut)",
+    "Baja Flash",
+    "Baja California (strawberry + melon)",
+    "Pitch Black (grape)",
+    "White Out (smooth citrus)",
+    "Purple Thunder (grape + tropical)",
+    "Spark (raspberry lemonade)",
+    "Game Fuel Citrus Cherry",
+    "Game Fuel Tropical Strike",
+    "Rise Energy (orange Dreamsicle)",
+    "Rise Energy (Berry Blitz)",
+    "Flamin' Hot Dew",
+    "Liberty Brew (50-flavor mashup)"
+  ]
+}

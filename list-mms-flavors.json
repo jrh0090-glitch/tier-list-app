@@ -1,0 +1,27 @@
+{
+  "name": "M&M's Flavors",
+  "emoji": "\ud83d\udfe1",
+  "subtitle": "Every M&M variety \u2014 classic to wild",
+  "items": [
+    "Milk Chocolate",
+    "Peanut",
+    "Peanut Butter",
+    "Dark Chocolate",
+    "Dark Chocolate Peanut",
+    "Crispy",
+    "Almond",
+    "Pretzel",
+    "Caramel",
+    "Fudge Brownie",
+    "Hazelnut Spread",
+    "Minis",
+    "White Chocolate",
+    "Salted Caramel Dark Chocolate",
+    "Crunchy Cookie",
+    "Pumpkin Pie (seasonal)",
+    "Pecan Pie (seasonal)",
+    "Mint Chocolate",
+    "Strawberry",
+    "Coconut"
+  ]
+}

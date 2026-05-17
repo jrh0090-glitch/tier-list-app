@@ -1,0 +1,30 @@
+{
+  "name": "Gatorade Flavors",
+  "emoji": "\u26a1",
+  "subtitle": "Is it in you? Rate every flavor",
+  "items": [
+    "Lemon-Lime (the original)",
+    "Orange",
+    "Fruit Punch",
+    "Cool Blue",
+    "Glacier Cherry",
+    "Glacier Freeze",
+    "Riptide Rush (grape punch)",
+    "Rain Berry",
+    "Watermelon Citrus",
+    "Strawberry Lemonade",
+    "Cherry",
+    "Mango Citrus",
+    "Fierce Grape",
+    "Fierce Melon",
+    "Fierce Blue Cherry",
+    "Gatorade Zero Glacier Freeze",
+    "Gatorade Zero Grape",
+    "Gatorade Zero Orange",
+    "G2 Fruit Punch",
+    "Gatorlyte Watermelon Strawberry",
+    "Gatorlyte Cherry Lime",
+    "Fast Twitch Strawberry Watermelon",
+    "Fast Twitch Cool Blue"
+  ]
+}

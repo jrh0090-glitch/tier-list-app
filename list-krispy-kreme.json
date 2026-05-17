@@ -1,0 +1,32 @@
+{
+  "name": "Krispy Kreme Donuts",
+  "emoji": "\ud83c\udf69",
+  "subtitle": "The full menu \u2014 from Original Glazed to seasonal specials",
+  "items": [
+    "Original Glazed (the one and only)",
+    "Chocolate Iced Glazed",
+    "Chocolate Iced Kreme Filled",
+    "Original Filled Kreme",
+    "Glazed Chocolate Cake",
+    "Chocolate Iced Custard Filled",
+    "Maple Iced Glazed",
+    "Strawberry Iced with Sprinkles",
+    "Glazed Blueberry Cake",
+    "Cinnamon Apple Filled",
+    "Glazed Raspberry Filled",
+    "Powdered Cake Donut",
+    "Glazed Lemon Filled",
+    "Chocolate Cake with Chocolate Icing",
+    "Glazed Cruller",
+    "Classic Cake Donut",
+    "Original Glazed Holes",
+    "Chocolate Holes",
+    "Sugar Holes",
+    "Caramel Kreme Crunch",
+    "Strawberry Cheesecake",
+    "Cinnamon Sugar",
+    "Pumpkin Spice Glazed (seasonal)",
+    "Peppermint Hot Cocoa (seasonal)",
+    "Birthday Original Glazed"
+  ]
+}
